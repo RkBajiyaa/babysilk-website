@@ -1,0 +1,689 @@
+Here's your **complete, Replit-proof master build prompt**. I've written it to be extremely specific so Replit can't cut corners, skip pages, or deliver low quality.
+
+---
+
+# 🧾 LITTLE STUDIO BABY — COMPLETE REPLIT BUILD PROMPT
+
+**Copy everything below and paste it into Replit AI as your first message.**
+
+---
+
+```
+You are building a COMPLETE, PRODUCTION-QUALITY mobile-first ecommerce 
+website called "Little Studio Baby" — a kids ethnic wear store for Indian 
+mothers.
+
+DO NOT simplify. DO NOT skip pages. DO NOT reduce product count. 
+DO NOT use placeholder UI. Build EVERYTHING listed below, EXACTLY as 
+specified. This is a real business. Premium quality only.
+
+═══════════════════════════════════════
+TECH STACK — USE EXACTLY THIS
+═══════════════════════════════════════
+
+Framework:     Next.js 14 (App Router)
+Styling:       Tailwind CSS
+Database:      Supabase (PostgreSQL)
+Image Storage: Cloudinary (URLs in DB)
+Analytics:     Google Analytics GA4
+Deployment:    Vercel via GitHub
+Font:          Google Fonts — "Cinzel" for headings, "Poppins" for body
+               Import both from Google Fonts in layout.
+
+═══════════════════════════════════════
+COLOR SYSTEM — USE CSS VARIABLES
+═══════════════════════════════════════
+
+--color-primary:    #7B1C1C   (deep maroon)
+--color-gold:       #C9A84C   (gold)
+--color-cream:      #FDF6EC   (soft cream background)
+--color-teal:       #1A6B6B   (accent teal)
+--color-text:       #1A1A1A
+--color-muted:      #6B6B6B
+--color-white:      #FFFFFF
+
+Apply these consistently. The website must feel like a PREMIUM ethnic 
+boutique, not a generic ecommerce template.
+
+═══════════════════════════════════════
+IMAGE STRATEGY — FOLLOW EXACTLY
+═══════════════════════════════════════
+
+For products, use numbered image filenames:
+  /images/products/1.jpg
+  /images/products/2.jpg
+  ... up to ...
+  /images/products/50.jpg
+
+For images 1 through 20: fetch real kids ethnic clothing images from 
+Unsplash using URLs like:
+  https://source.unsplash.com/400x500/?indian,kids,ethnic,dress,traditional
+
+For images 21 through 50: use the filename as placeholder 
+(e.g., "21.jpg") with a descriptive alt text like:
+  alt="Pattu Silk Dress for Kids - 3-4 Years"
+
+Every product must have 3 images assigned from this pool 
+(rotate/reuse from the 20 real ones for now).
+
+═══════════════════════════════════════
+ALL 12 PAGES — BUILD EVERY SINGLE ONE
+═══════════════════════════════════════
+
+1.  /                    → Home
+2.  /shop                → Shop / Collection
+3.  /product/[slug]      → Product Detail (dynamic)
+4.  /cart                → Cart
+5.  /checkout            → Checkout
+6.  /payment             → Payment Page
+7.  /order-success       → Order Success
+8.  /track-order         → Order Tracking
+9.  /contact             → Contact Us
+10. /returns             → Returns & Exchange
+11. /privacy-policy      → Privacy Policy
+12. /terms               → Terms & Conditions
+
+DO NOT skip any page. Each must be fully built, not a "coming soon" stub.
+
+═══════════════════════════════════════
+50 PRODUCTS — GENERATE ALL 50
+═══════════════════════════════════════
+
+Distribute as follows:
+  Pattu Dresses      → 12 products
+  Festive Wear       → 10 products
+  Lehenga Sets       →  8 products
+  Traditional Frocks →  8 products
+  Party Wear         →  6 products
+  New Arrivals       →  6 products
+
+Each product must have:
+  - Unique name (e.g., "Kanjivaram Silk Pattu Dress", "Golden Zari Lehenga")
+  - Category
+  - MRP price (₹900–₹1300)
+  - Discount price (₹650–₹850)
+  - 3 image URLs (use /images/products/N.jpg rotation)
+  - Sizes array (see sizes below)
+  - 3–4 reviews (see review format below)
+  - Description (2–3 lines, dummy is fine — owner will update later)
+  - bundle_eligible: true for all
+
+SIZES — USE THIS EXACT LIST:
+  "0-3 Months"
+  "3-6 Months"
+  "6-9 Months"
+  "9-12 Months"
+  "1-2 Years"
+  "2-3 Years"
+  "3-4 Years"
+  "4-5 Years"
+  "5-6 Years"
+  "6-7 Years"
+  "7-8 Years"
+  "8-10 Years"
+
+Not every product needs all sizes — assign 4–6 relevant sizes per product.
+
+═══════════════════════════════════════
+PRODUCT DETAIL PAGE — BUILD IN FULL
+═══════════════════════════════════════
+
+Layout (mobile-first):
+
+TOP SECTION:
+  - Image gallery with swipe (use Swiper.js or CSS scroll-snap)
+  - Show 3 images, swipeable on mobile
+  - Thumbnail dots below
+
+PRODUCT INFO SECTION:
+  - Product name (Cinzel font, large)
+  - Star rating display (static 4.5 stars, gold color)
+  - MRP price with strikethrough (muted color)
+  - Discount price (maroon, bold, large)
+  - "Limited Time Offer" badge in gold
+  - Delivery badge: "🚚 Delivers in 7–9 Days"
+  - 7-day exchange badge: "🔄 7 Day Easy Exchange"
+
+SIZE SELECTOR:
+  - Show all available sizes as clickable chips
+  - Selected size highlights in maroon
+  - One size must be selected before adding to cart
+  - If no size selected and user taps "Add to Cart", show error:
+    "Please select a size"
+
+SIZE CHART (collapsible section, show by default):
+  Build a proper size chart table:
+
+  | Size Label   | Age        | Chest (cm) | Length (cm) |
+  |--------------|------------|------------|-------------|
+  | 0-3 Months   | 0–3 mo     | 40         | 40          |
+  | 3-6 Months   | 3–6 mo     | 42         | 44          |
+  | 6-9 Months   | 6–9 mo     | 44         | 47          |
+  | 9-12 Months  | 9–12 mo    | 46         | 50          |
+  | 1-2 Years    | 1–2 yrs    | 50         | 55          |
+  | 2-3 Years    | 2–3 yrs    | 54         | 60          |
+  | 3-4 Years    | 3–4 yrs    | 58         | 65          |
+  | 4-5 Years    | 4–5 yrs    | 62         | 70          |
+  | 5-6 Years    | 5–6 yrs    | 66         | 75          |
+  | 6-7 Years    | 6–7 yrs    | 70         | 80          |
+  | 7-8 Years    | 7–8 yrs    | 74         | 86          |
+  | 8-10 Years   | 8–10 yrs   | 78         | 92          |
+
+  Style it cleanly with alternating row colors (cream/white).
+  Add note below: "Size up if your child is between sizes."
+
+QUANTITY SELECTOR:
+  - Minus / Plus buttons
+  - Min: 1, Max: 10
+
+ADD TO CART BUTTON:
+  - Large, full-width, maroon background, gold text
+  - Text: "Add to Cart"
+  - On tap: validates size selected, adds to cart, shows success toast
+
+TABS SECTION (3 tabs):
+  Tab 1 — Description
+    Show product description text
+  Tab 2 — Size Chart
+    Repeat the size chart table here too
+  Tab 3 — Returns
+    "We offer 7-day easy exchange on all products. 
+     Item must be unused and in original packaging. 
+     Contact us on WhatsApp to initiate exchange."
+
+REVIEWS SECTION:
+  Show 3–4 dummy reviews per product.
+  
+  Review format:
+  {
+    name: "Priya S.",
+    location: "Chennai",
+    rating: 5,
+    date: "2 weeks ago",
+    text: "Absolutely beautiful dress! The fabric quality is amazing 
+           and my daughter looked like a princess. 
+           Delivery was fast too. Highly recommend!",
+    verified: true
+  }
+
+  Use these names/locations (rotate per product):
+  - Priya S., Chennai
+  - Meena R., Bangalore  
+  - Divya K., Hyderabad
+  - Lakshmi T., Coimbatore
+  - Anitha M., Madurai
+  - Kavitha N., Kochi
+  - Sujatha P., Trichy
+  - Rekha V., Vijayawada
+
+  Show "Verified Purchase" badge in green on each review.
+  Show star rating per review.
+  Show "Helpful? 👍" button (static, no backend needed).
+
+═══════════════════════════════════════
+STICKY CART BUTTON — CRITICAL
+═══════════════════════════════════════
+
+Once ANY product is added to cart:
+  - Show sticky bar at BOTTOM of screen (fixed position)
+  - Style: maroon background, full width
+  - Content: "🛒 View Cart (N items) — ₹XXXX →"
+  - Tapping it navigates to /cart
+  - Updates in real-time as items are added/removed
+  - Visible on ALL pages once cart has items
+  - Z-index must be high enough to always show above content
+
+═══════════════════════════════════════
+CART PAGE
+═══════════════════════════════════════
+
+Show each item:
+  - Product image (small, rounded)
+  - Product name
+  - Selected size
+  - Quantity controls (+ / -)
+  - Item price
+  - Remove button (trash icon)
+
+Cart Summary box:
+  - Subtotal
+  - Bundle discount (if applicable, see bundle logic)
+  - Total amount in bold
+  - "Proceed to Checkout" button (full width, maroon)
+
+BUNDLE PRICING LOGIC:
+  If cart has 3 or more bundle_eligible products:
+    bundles = floor(eligible_count / 3)
+    remaining = eligible_count % 3
+    bundle_total = bundles * 1550
+    remaining_total = remaining * individual_prices_sum
+    final_total = bundle_total + remaining_total
+  
+  Show banner: "🎉 Bundle Offer Applied! Any 3 dresses = ₹1550"
+  Show savings: "You saved ₹XXX"
+  
+  If cart has 1–2 eligible items:
+    Show nudge: "Add X more dress(es) to unlock ₹1550 bundle deal!"
+
+═══════════════════════════════════════
+CHECKOUT PAGE
+═══════════════════════════════════════
+
+Form fields:
+  Full Name        (required)
+  Phone Number     (required, 10 digits, Indian format)
+  Email            (optional)
+  Address Line 1   (required)
+  Address Line 2   (optional)
+  City             (required)
+  State            (required, dropdown of all Indian states)
+  Pincode          (required, 6 digits)
+
+Validation:
+  - Inline error messages below each field
+  - Phone must be exactly 10 digits
+  - Pincode must be exactly 6 digits
+  - No submission if required fields are empty
+
+Order summary visible on same page (collapsible on mobile):
+  Show items, sizes, total
+
+Button: "Proceed to Payment" (full width, maroon)
+
+═══════════════════════════════════════
+PAYMENT PAGE (UPI ONLY)
+═══════════════════════════════════════
+
+Heading: "Complete Your Payment"
+Show order total prominently: ₹XXXX
+
+Payment buttons (large, icon + label):
+  [G Pay icon]      Google Pay
+  [PhonePe icon]    PhonePe  
+  [Paytm icon]      Paytm
+  [UPI icon]        Other UPI App
+
+Each button generates UPI deep link:
+  upi://pay?pa=CLIENT_UPI_ID&pn=Little+Studio+Baby&am=TOTAL&tn=ORDER_ID
+
+  Replace CLIENT_UPI_ID with: littlestudiobaby@upi (placeholder)
+  
+ON MOBILE: Button opens UPI app directly.
+ON DESKTOP: Show modal with:
+  - QR code (use a QR library or static placeholder)
+  - UPI ID displayed as text: littlestudiobaby@upi
+  - "Copy UPI ID" button
+  - Instructions: "Open any UPI app, scan QR or enter UPI ID, 
+    pay ₹XXXX, then come back and submit payment proof."
+
+After user taps any payment button, show:
+
+  "Did you complete the payment?"
+  [✅ Yes, I Paid]   [⏳ Pay Later]
+
+If "Yes, I Paid":
+  Show form:
+    UTR / Transaction ID  (required, text input)
+    Upload Screenshot     (optional, file upload, image only)
+  
+  Button: "Submit Payment Proof"
+  
+  On submit: save order to database with status "Payment Verification Pending"
+  Redirect to /order-success
+
+If "Pay Later":
+  Show message:
+  "Your order has been saved. 
+   Complete payment within 24 hours to confirm your order.
+   Order ID: LSB-XXXXXX"
+  WhatsApp button: "Pay via WhatsApp"
+
+═══════════════════════════════════════
+ORDER SUCCESS PAGE
+═══════════════════════════════════════
+
+Show:
+  ✅ Green checkmark animation
+  "Thank You! Order Placed Successfully"
+  Order ID (large, bold): LSB-XXXXXX
+  "Estimated Delivery: 7–9 Business Days"
+  
+  Two buttons:
+  [Track My Order]        → /track-order
+  [Contact on WhatsApp]   → WhatsApp link
+
+  Order summary (items, total, address)
+
+═══════════════════════════════════════
+ORDER TRACKING PAGE
+═══════════════════════════════════════
+
+Input form:
+  Order ID    (required)
+  Phone       (required)
+
+On submit: query database for order
+
+Show vertical timeline:
+  ✅ Order Placed       (always complete)
+  ⏳ Payment Verified   (complete if status >= payment_received)
+  ⏳ Processing         (complete if status >= processing)
+  ⏳ Packed             (complete if status >= packed)
+  ⏳ Shipped            (complete if status >= shipped)
+  ⏳ Out for Delivery   (complete if status >= out_for_delivery)
+  ⏳ Delivered          (complete if delivered)
+
+Each step shows date/time if available.
+Show estimated delivery date.
+Show order summary below.
+
+═══════════════════════════════════════
+CONTACT PAGE
+═══════════════════════════════════════
+
+Show:
+  WhatsApp number: [placeholder]
+  Email: [placeholder]
+  Business hours: Mon–Sat, 9AM–7PM
+  "We typically respond within 2 hours on WhatsApp"
+  Big WhatsApp button
+
+═══════════════════════════════════════
+RETURNS PAGE
+═══════════════════════════════════════
+
+Clearly explain:
+  - 7 days from delivery
+  - Exchange only (no refund)
+  - Item must be unused
+  - Original packaging required
+  - How to initiate (WhatsApp)
+  Steps 1-2-3 visual flow
+
+═══════════════════════════════════════
+PRIVACY POLICY & TERMS PAGES
+═══════════════════════════════════════
+
+Generate standard Indian ecommerce 
+privacy policy and terms content.
+Not just a stub — full readable content.
+
+═══════════════════════════════════════
+ADMIN PANEL
+═══════════════════════════════════════
+
+Route: /admin
+Password protected (hardcoded for now: "LSBAdmin2024")
+
+Admin Dashboard shows:
+  Total orders count
+  Pending payment verifications count
+  Orders today
+  Total revenue
+
+Orders List:
+  Table with: Order ID, Name, Phone, Amount, Status, Date
+  Click to open order detail
+
+Order Detail shows:
+  All customer info
+  All items ordered
+  Payment screenshot (if uploaded)
+  UTR/Transaction ID
+  Status dropdown:
+    Pending Payment
+    Payment Verification Pending
+    Payment Received
+    Processing
+    Shipped
+    Delivered
+    Cancelled
+  "Save Status" button
+  Notes field (admin can add delivery notes)
+
+═══════════════════════════════════════
+FLOATING WHATSAPP BUTTON
+═══════════════════════════════════════
+
+Show on ALL pages.
+Fixed position, bottom-right.
+Green circle with WhatsApp icon.
+Z-index: 9999
+
+WhatsApp link format:
+  https://wa.me/91XXXXXXXXXX?text=Hello%2C+I+need+help+with+my+order
+
+Replace XXXXXXXXXX with placeholder number.
+
+═══════════════════════════════════════
+DATABASE TABLES (SUPABASE)
+═══════════════════════════════════════
+
+Table: products
+  id              uuid primary key
+  name            text
+  slug            text unique
+  category        text
+  description     text
+  mrp_price       integer
+  discount_price  integer
+  images          text[] (array of image URLs)
+  sizes           text[]
+  reviews         jsonb
+  bundle_eligible boolean default true
+  created_at      timestamptz
+
+Table: orders
+  id                      uuid primary key
+  order_id                text unique (format: LSB-XXXXXX)
+  customer_name           text
+  phone                   text
+  email                   text
+  address                 text
+  city                    text
+  state                   text
+  pincode                 text
+  total_amount            integer
+  payment_status          text
+  order_status            text
+  upi_transaction_id      text
+  payment_screenshot_url  text
+  delivery_days           integer
+  notes                   text
+  created_at              timestamptz
+
+Table: order_items
+  id          uuid primary key
+  order_id    text references orders(order_id)
+  product_id  uuid references products(id)
+  size        text
+  quantity    integer
+  price       integer
+
+═══════════════════════════════════════
+HOMEPAGE — FULL STRUCTURE
+═══════════════════════════════════════
+
+SECTION 1 — Hero Banner
+  Full-width background image (use Unsplash kids ethnic URL)
+  Overlay: semi-transparent maroon gradient
+  Headline: "Premium Kids Ethnic Wear" (Cinzel, white, large)
+  Subhead: "Beautiful Traditional Dresses for Little Stars"
+  Badge: "🎉 Any 3 Dresses for ₹1550"
+  CTA: [Shop Now] button (gold background, maroon text)
+
+SECTION 2 — Trust Bar (horizontal scroll on mobile)
+  🚚 All India Delivery
+  🔄 7 Day Exchange
+  💳 Easy UPI Payment
+  ✨ Premium Quality
+
+SECTION 3 — Featured Categories (2×3 grid on mobile)
+  Pattu Dresses
+  Festive Wear
+  Lehenga Sets
+  Traditional Frocks
+  Party Wear
+  New Arrivals
+  Each card: category image, category name, "Shop Now" link
+
+SECTION 4 — Trending Products
+  Heading: "Trending This Season"
+  Show 8 products in 2-column grid
+  Each card:
+    Image (aspect ratio 3:4)
+    Product name
+    ⭐⭐⭐⭐⭐ rating
+    MRP (strikethrough)
+    Discount price (maroon, bold)
+    [Add to Cart] button
+
+SECTION 5 — Bundle Offer Banner
+  Full-width colored banner
+  "🎉 Buy Any 3 Dresses — Pay Only ₹1550"
+  "Mix & Match from Any Category"
+  [Shop the Bundle] button
+
+SECTION 6 — Customer Reviews
+  Heading: "What Moms Are Saying"
+  Show 4 reviews as cards (horizontal scroll on mobile)
+  Each: name, city, stars, review text, photo (use Unsplash avatar)
+
+SECTION 7 — Footer
+  Logo / Store name
+  Links: Shop, Contact, Returns, Privacy, Terms
+  WhatsApp number
+  Copyright
+
+═══════════════════════════════════════
+SHOP PAGE
+═══════════════════════════════════════
+
+TOP: Category filter pills (horizontal scroll)
+  All | Pattu | Festive | Lehenga | Frocks | Party | New
+
+SORT: Dropdown
+  Price: Low to High
+  Price: High to Low
+  Newest First
+
+GRID: 2 columns on mobile, 3 on desktop
+  Show all 50 products
+  Each card: image, name, stars, MRP, discount price, Add to Cart
+
+═══════════════════════════════════════
+MOBILE REQUIREMENTS — NON-NEGOTIABLE
+═══════════════════════════════════════
+
+1. Minimum tap target: 44px height on all buttons
+2. Font size minimum: 14px for body, 16px for inputs
+3. No horizontal scroll on any page
+4. Images use aspect-ratio to prevent layout shift
+5. Sticky bottom cart bar (as described above)
+6. Sticky WhatsApp button (as described above)
+7. Image lazy loading on all product images
+8. Swipeable image gallery on product detail page
+9. Touch-friendly size selector chips (min 40px height)
+10. Checkout form inputs font-size: 16px minimum 
+    (prevents iOS zoom on focus)
+
+═══════════════════════════════════════
+PERFORMANCE REQUIREMENTS
+═══════════════════════════════════════
+
+- Use next/image for all images (automatic WebP + lazy load)
+- Use next/font for Google Fonts (no layout shift)
+- Use skeleton loaders on product grid while loading
+- No blocking scripts
+- Product data can be fetched at build time (getStaticProps 
+  or generateStaticParams) for fast page loads
+
+═══════════════════════════════════════
+ENVIRONMENT VARIABLES (use .env.local)
+═══════════════════════════════════════
+
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_GA_ID=your_ga4_id
+NEXT_PUBLIC_UPI_ID=littlestudiobaby@upi
+NEXT_PUBLIC_UPI_NAME=Little+Studio+Baby
+NEXT_PUBLIC_WHATSAPP_NUMBER=919999999999
+ADMIN_PASSWORD=LSBAdmin2024
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+
+═══════════════════════════════════════
+SEED DATA
+═══════════════════════════════════════
+
+Create a file: /scripts/seed.js
+
+This script should:
+1. Insert all 50 products into Supabase
+2. Run with: node scripts/seed.js
+3. Include all product names, categories, prices, 
+   images, sizes, and reviews
+
+This allows the owner to reset and re-seed the database anytime.
+
+═══════════════════════════════════════
+FINAL QUALITY CHECK CHECKLIST
+═══════════════════════════════════════
+
+Before saying you're done, verify:
+
+[ ] All 12 pages exist and are functional
+[ ] All 50 products exist in seed data
+[ ] Product detail page has image swipe
+[ ] Product detail page has size selector
+[ ] Product detail page has size chart table
+[ ] Product detail page has 3–4 reviews
+[ ] Sticky cart bar appears after adding to cart
+[ ] Bundle pricing logic works correctly
+[ ] UPI deep link generates correctly
+[ ] Payment proof submission saves to DB
+[ ] Order success page shows order ID
+[ ] Order tracking page works with order ID + phone
+[ ] Admin panel is password protected
+[ ] Admin can update order status
+[ ] WhatsApp floating button on all pages
+[ ] Mobile: no horizontal overflow
+[ ] Mobile: font size 16px on all inputs
+[ ] All colors match the defined palette
+[ ] Cinzel font on headings, Poppins on body
+
+═══════════════════════════════════════
+START BUILDING NOW
+═══════════════════════════════════════
+
+Begin with:
+1. Next.js project setup with Tailwind
+2. Layout file with fonts, colors, sticky cart bar, 
+   WhatsApp button, footer
+3. Seed data file with all 50 products
+4. Home page
+5. Shop page
+6. Product detail page
+7. Cart → Checkout → Payment → Success flow
+8. Order tracking page
+9. Admin panel
+10. Remaining static pages
+
+DO NOT ask clarifying questions. 
+DO NOT simplify anything. 
+DO NOT skip any section. 
+Build everything as specified above.
+```
+
+---
+
+## A Few Tips Before You Paste This
+
+**After pasting**, if Replit tries to simplify anything, respond with: *"Do not simplify. Build exactly as specified. Continue from where you left off."*
+
+**For the UPI ID and WhatsApp number**, replace the placeholders once the site is running — takes 2 minutes.
+
+**The seed script** is the most important thing after the build — run it first before testing anything, otherwise the shop will look empty.
+
+Want me to also write the **follow-up correction prompts** to use when Replit inevitably skips something or makes a mistake?
