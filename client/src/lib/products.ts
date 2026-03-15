@@ -164,3 +164,34 @@ export function getCategoryImage(category: string): string {
   const catProducts = ALL_PRODUCTS.filter(p => p.category === category);
   return catProducts.length > 0 ? catProducts[0].images[0] : "";
 }
+
+export const ALL_PRODUCTS: ProductData[] = productDefinitions.map((p, idx) => {
+
+  let images = getImages(idx);
+
+  // Custom images for Kanjivaram Silk Pattu Dress
+  if (p.name === "Kanjivaram Silk Pattu Dress") {
+    images = [
+      "/attached_assets/1.1.png",
+      "/attached_assets/1.2.png",
+      "/attached_assets/1.3.png",
+      "/attached_assets/1.4.png",
+      "/attached_assets/1.5.png"
+    ];
+  }
+
+  return {
+    id: idx + 1,
+    name: p.name,
+    slug: slugify(p.name),
+    category: p.category,
+    description: p.desc,
+    mrpPrice: p.mrp,
+    discountPrice: p.discount,
+    images,
+    sizes: getSizes(idx),
+    reviews: getReviews(idx),
+    bundleEligible: true,
+  };
+
+});
