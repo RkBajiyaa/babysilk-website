@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Truck, Tag } from "lucide-react";
 import { useCart } from "@/lib/cart";
 
 export default function StickyCartBar() {
@@ -8,25 +8,62 @@ export default function StickyCartBar() {
   if (totalItems === 0) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[9998] bg-maroon shadow-lg" data-testid="sticky-cart-bar">
+    <div className="fixed bottom-0 left-0 right-0 z-[9998] bg-maroon border-t border-gold/30 shadow-2xl">
+
       <Link href="/cart">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between cursor-pointer">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between cursor-pointer">
+
+          {/* LEFT SIDE */}
+
+          <div className="flex flex-col">
+
+            <div className="flex items-center gap-2">
+
+              <ShoppingCart size={20} className="text-gold" />
+
+              <span className="text-cream font-semibold text-sm">
+                View Cart ({totalItems} {totalItems === 1 ? "item" : "items"})
+              </span>
+
+            </div>
+
+            {/* SHIPPING + SAVINGS */}
+
+            <div className="flex items-center gap-3 text-xs mt-1">
+
+              <span className="flex items-center gap-1 text-gold">
+                <Truck size={12}/>
+                Free Delivery
+              </span>
+
+              {pricing.savings > 0 && (
+                <span className="flex items-center gap-1 text-green-300">
+                  <Tag size={12}/>
+                  You saved ₹{pricing.savings.toLocaleString("en-IN")}
+                </span>
+              )}
+
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDE */}
+
           <div className="flex items-center gap-3">
-            <ShoppingCart size={20} className="text-gold" />
-            <span className="text-cream-DEFAULT font-medium text-sm" data-testid="text-sticky-cart-items">
-              View Cart ({totalItems} {totalItems === 1 ? "item" : "items"})
+
+            <span className="text-gold font-bold text-lg">
+              ₹{pricing.total.toLocaleString("en-IN")}
             </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gold font-bold text-base" data-testid="text-sticky-cart-total">
-              Rs.{pricing.total.toLocaleString("en-IN")}
+
+            <span className="text-cream font-medium text-sm">
+              Checkout →
             </span>
-            <svg className="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+
           </div>
+
         </div>
       </Link>
+
     </div>
   );
 }

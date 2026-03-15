@@ -1,343 +1,512 @@
 import { useParams, Link } from "wouter";
 import { useState } from "react";
-import { Star, Truck, RefreshCw, ChevronLeft, Minus, Plus, Check, ThumbsUp } from "lucide-react";
-import { getProductBySlug } from "@/lib/products";
+import {
+Star,
+Truck,
+RefreshCw,
+ChevronLeft,
+Minus,
+Plus,
+CreditCard,
+ThumbsUp,
+X
+} from "lucide-react";
+
+import { getProductBySlug, ALL_PRODUCTS } from "@/lib/products";
 import { addToCart } from "@/lib/cart";
 import { useToast } from "@/hooks/use-toast";
-import { SIZE_CHART } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProductCard from "@/components/ProductCard";
 
 export default function ProductDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const product = getProductBySlug(slug || "");
-  const { toast } = useToast();
 
-  const [currentImage, setCurrentImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [sizeError, setSizeError] = useState(false);
-  const [sizeChartOpen, setSizeChartOpen] = useState(false);
+const { slug } = useParams<{ slug: string }>();
+const product = getProductBySlug(slug || "");
+const { toast } = useToast();
 
-  if (!product) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <p className="text-lg text-muted-foreground">Product not found.</p>
-        <Link href="/shop">
-          <Button className="mt-4 bg-maroon text-cream-DEFAULT">Back to Shop</Button>
-        </Link>
-      </div>
-    );
-  }
+const [currentImage, setCurrentImage] = useState(0);
+const [fullscreen, setFullscreen] = useState(false);
+const [selectedSize, setSelectedSize] = useState<string | null>(null);
+const [quantity, setQuantity] = useState(1);
+const [sizeError, setSizeError] = useState(false);
+const [showCartBar, setShowCartBar] = useState(false);
 
-  const avgRating = product.reviews.reduce((s, r) => s + r.rating, 0) / product.reviews.length;
-  const discount = Math.round(((product.mrpPrice - product.discountPrice) / product.mrpPrice) * 100);
+const [touchStart, setTouchStart] = useState(0);
 
-  const handleAddToCart = () => {
-    if (!selectedSize) {
-      setSizeError(true);
-      toast({ title: "Please select a size", variant: "destructive" });
-      return;
-    }
-    setSizeError(false);
-    addToCart({
-      productId: product.id,
-      name: product.name,
-      slug: product.slug,
-      image: product.images[0],
-      size: selectedSize,
-      mrpPrice: product.mrpPrice,
-      discountPrice: product.discountPrice,
-      bundleEligible: product.bundleEligible,
-    }, quantity);
-    toast({ title: "Added to cart!", description: `${product.name} - ${selectedSize} x ${quantity}` });
-  };
+if (!product) {
+return (
+<div className="max-w-7xl mx-auto px-4 py-16 text-center">
+<p className="text-lg text-muted-foreground">Product not found</p>
+</div>
+);
+}
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    (e.currentTarget as any)._touchStartX = touch.clientX;
-  };
+const avgRating =
+(product.reviews || []).reduce((s, r) => s + r.rating, 0) /
+(product.reviews?.length || 1);
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const startX = (e.currentTarget as any)._touchStartX;
-    if (!startX) return;
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0 && currentImage < product.images.length - 1) {
-        setCurrentImage(currentImage + 1);
-      } else if (diff < 0 && currentImage > 0) {
-        setCurrentImage(currentImage - 1);
-      }
-    }
-  };
+const discount = Math.round(
+((product.mrpPrice - product.discountPrice) /
+product.mrpPrice) *
+100
+);
 
-  return (
-    <div className="max-w-7xl mx-auto" data-testid="page-product-detail">
-      <div className="px-4 py-3">
-        <Link href="/shop">
-          <span className="inline-flex items-center gap-1 text-sm text-muted-foreground" data-testid="link-back-shop">
-            <ChevronLeft size={16} /> Back to Shop
-          </span>
-        </Link>
-      </div>
+const stockLeft = (product.id % 5) + 4;
+const viewers = (product.id % 16) + 18;
 
-      <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:px-4">
-        <div className="relative" data-testid="product-gallery">
-          <div
-            className="relative aspect-[3/4] overflow-hidden lg:rounded-lg"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <img
-              src={product.images[currentImage]}
-              alt={product.name}
-              className="w-full h-full object-cover transition-opacity duration-300"
-              data-testid="img-product-main"
-            />
-            {discount > 0 && (
-              <span className="absolute top-3 left-3 bg-maroon text-cream-DEFAULT text-xs font-bold px-3 py-1.5 rounded-md">
-                {discount}% OFF
-              </span>
-            )}
-          </div>
-          <div className="flex justify-center gap-2 py-3" data-testid="product-gallery-dots">
-            {product.images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentImage(idx)}
-                className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
-                  currentImage === idx ? "border-maroon" : "border-transparent"
-                }`}
-                data-testid={`button-gallery-thumb-${idx}`}
-              >
-                <img src={img} alt="" className="w-full h-full object-cover" />
-              </button>
-            ))}
-          </div>
-        </div>
+/* swipe */
 
-        <div className="px-4 lg:px-0 pb-8">
-          <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2" data-testid="text-product-title">
-            {product.name}
-          </h1>
+const handleTouchStart = (e:any)=>{
+setTouchStart(e.touches[0].clientX);
+};
 
-          <div className="flex items-center gap-2 mb-3" data-testid="product-rating">
-            <div className="flex items-center gap-0.5">
-              {[1, 2, 3, 4, 5].map(i => (
-                <Star key={i} size={16} className={i <= Math.round(avgRating) ? "fill-gold text-gold" : "text-gold/30"} />
-              ))}
-            </div>
-            <span className="text-sm text-muted-foreground">
-              {avgRating.toFixed(1)} ({product.reviews.length} reviews)
-            </span>
-          </div>
+const handleTouchEnd = (e:any)=>{
+const end = e.changedTouches[0].clientX;
+const diff = touchStart - end;
 
-          <div className="flex items-baseline gap-3 mb-3" data-testid="product-price">
-            <span className="text-2xl sm:text-3xl font-bold text-maroon">
-              Rs.{product.discountPrice}
-            </span>
-            <span className="text-base text-muted-foreground line-through">
-              Rs.{product.mrpPrice}
-            </span>
-            <span className="text-sm font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-md">
-              Save Rs.{product.mrpPrice - product.discountPrice}
-            </span>
-          </div>
+if(diff > 50){
+setCurrentImage((prev)=> (prev+1) % product.images.length);
+}
 
-          <div className="inline-block bg-gold/20 border border-gold/30 rounded-md px-3 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-gold-dark">Limited Time Offer</span>
-          </div>
+if(diff < -50){
+setCurrentImage((prev)=> prev === 0 ? product.images.length-1 : prev-1);
+}
+};
 
-          <div className="flex flex-col gap-2 mb-6">
-            <div className="flex items-center gap-2 text-sm text-foreground/70">
-              <Truck size={16} className="text-teal" />
-              <span>Delivers in 7-9 Days | All India Delivery</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-foreground/70">
-              <RefreshCw size={16} className="text-teal" />
-              <span>7 Day Easy Exchange</span>
-            </div>
-          </div>
+/* suggestions */
 
-          <div className="mb-6" data-testid="size-selector">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-foreground">Select Size</h3>
-              <button
-                onClick={() => setSizeChartOpen(!sizeChartOpen)}
-                className="text-xs font-medium text-teal underline"
-                data-testid="button-size-chart-toggle"
-              >
-                Size Chart
-              </button>
-            </div>
-            {sizeError && (
-              <p className="text-xs text-red-600 mb-2" data-testid="text-size-error">Please select a size</p>
-            )}
-            <div className="flex flex-wrap gap-2">
-              {product.sizes.map(size => (
-                <button
-                  key={size}
-                  onClick={() => { setSelectedSize(size); setSizeError(false); }}
-                  className={`px-3 py-2.5 min-h-[44px] rounded-md text-sm font-medium border transition-colors ${
-                    selectedSize === size
-                      ? "bg-maroon text-cream-DEFAULT border-maroon"
-                      : "bg-white text-foreground border-gold/20"
-                  }`}
-                  data-testid={`button-size-${size.replace(/\s/g, '-')}`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
+/* first try same category */
+let similarProducts = ALL_PRODUCTS
+.filter(p => p.category === product.category && p.id !== product.id)
+.slice(0,4);
 
-          {sizeChartOpen && (
-            <div className="mb-6 bg-cream rounded-lg p-4 border border-gold/10 animate-fade-in" data-testid="size-chart-table">
-              <h4 className="font-heading text-sm font-semibold mb-3">Size Chart</h4>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left">
-                      <th className="py-2 px-3 font-semibold text-foreground/80">Size</th>
-                      <th className="py-2 px-3 font-semibold text-foreground/80">Age</th>
-                      <th className="py-2 px-3 font-semibold text-foreground/80">Chest (cm)</th>
-                      <th className="py-2 px-3 font-semibold text-foreground/80">Length (cm)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {SIZE_CHART.map((row, idx) => (
-                      <tr key={row.label} className={idx % 2 === 0 ? "bg-white" : "bg-cream"}>
-                        <td className="py-2 px-3 font-medium">{row.label}</td>
-                        <td className="py-2 px-3 text-muted-foreground">{row.age}</td>
-                        <td className="py-2 px-3 text-muted-foreground">{row.chest}</td>
-                        <td className="py-2 px-3 text-muted-foreground">{row.length}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">Size up if your child is between sizes.</p>
-            </div>
-          )}
+/* fallback if empty */
+if(similarProducts.length === 0){
+similarProducts = ALL_PRODUCTS
+.filter(p => p.id !== product.id)
+.slice(0,4);
+}
 
-          <div className="flex items-center gap-4 mb-6" data-testid="quantity-selector">
-            <span className="text-sm font-semibold">Quantity</span>
-            <div className="flex items-center border border-gold/20 rounded-md overflow-visible">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 flex items-center justify-center text-foreground/60"
-                data-testid="button-qty-minus"
-              >
-                <Minus size={16} />
-              </button>
-              <span className="w-10 h-10 flex items-center justify-center text-sm font-semibold border-x border-gold/20" data-testid="text-quantity">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                className="w-10 h-10 flex items-center justify-center text-foreground/60"
-                data-testid="button-qty-plus"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
+/* recommended */
+const recommendedProducts = ALL_PRODUCTS
+.filter(p => p.id !== product.id)
+.slice(4,8);
 
-          <Button
-            onClick={handleAddToCart}
-            className="w-full bg-maroon text-gold font-semibold text-base py-6"
-            size="lg"
-            data-testid="button-add-to-cart"
-          >
-            Add to Cart
-          </Button>
+/* add to cart */
 
-          <div className="mt-8" data-testid="product-tabs">
-            <Tabs defaultValue="description">
-              <TabsList className="grid w-full grid-cols-3 bg-cream">
-                <TabsTrigger value="description" data-testid="tab-description">Description</TabsTrigger>
-                <TabsTrigger value="sizechart" data-testid="tab-sizechart">Size Chart</TabsTrigger>
-                <TabsTrigger value="returns" data-testid="tab-returns">Returns</TabsTrigger>
-              </TabsList>
-              <TabsContent value="description" className="mt-4">
-                <p className="text-sm text-foreground/80 leading-relaxed" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                  {product.description}
-                </p>
-              </TabsContent>
-              <TabsContent value="sizechart" className="mt-4">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="text-left border-b border-gold/10">
-                        <th className="py-2 px-3 font-semibold">Size</th>
-                        <th className="py-2 px-3 font-semibold">Age</th>
-                        <th className="py-2 px-3 font-semibold">Chest (cm)</th>
-                        <th className="py-2 px-3 font-semibold">Length (cm)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {SIZE_CHART.map((row, idx) => (
-                        <tr key={row.label} className={idx % 2 === 0 ? "bg-white" : "bg-cream"}>
-                          <td className="py-2 px-3 font-medium">{row.label}</td>
-                          <td className="py-2 px-3 text-muted-foreground">{row.age}</td>
-                          <td className="py-2 px-3 text-muted-foreground">{row.chest}</td>
-                          <td className="py-2 px-3 text-muted-foreground">{row.length}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">Size up if your child is between sizes.</p>
-              </TabsContent>
-              <TabsContent value="returns" className="mt-4">
-                <div className="text-sm text-foreground/80 space-y-2" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                  <p>We offer 7-day easy exchange on all products.</p>
-                  <p>Item must be unused and in original packaging.</p>
-                  <p>Contact us on WhatsApp to initiate exchange.</p>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
+const handleAddToCart = () => {
 
-          <div className="mt-10" data-testid="product-reviews">
-            <h3 className="font-heading text-lg font-bold text-foreground mb-4">
-              Customer Reviews ({product.reviews.length})
-            </h3>
-            <div className="space-y-4">
-              {product.reviews.map((review, idx) => (
-                <div key={idx} className="bg-white rounded-lg p-4 border border-gold/10" data-testid={`card-review-${idx}`}>
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">{review.name}</span>
-                        {review.verified && (
-                          <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-1.5 py-0.5 rounded">
-                            <Check size={10} /> Verified Purchase
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-xs text-muted-foreground">{review.location}</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">{review.date}</span>
-                  </div>
-                  <div className="flex items-center gap-0.5 mb-2">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <Star key={i} size={12} className={i <= review.rating ? "fill-gold text-gold" : "text-gold/20"} />
-                    ))}
-                  </div>
-                  <p className="text-sm text-foreground/80 leading-relaxed" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    {review.text}
-                  </p>
-                  <button className="mt-2 text-xs text-muted-foreground flex items-center gap-1" data-testid={`button-helpful-${idx}`}>
-                    <ThumbsUp size={12} /> Helpful?
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+if (!selectedSize) {
+setSizeError(true);
+
+toast({
+title: "Please select a size",
+variant: "destructive"
+});
+
+return;
+}
+
+addToCart(
+{
+productId: product.id,
+name: product.name,
+slug: product.slug,
+image: product.images[0],
+size: selectedSize,
+mrpPrice: product.mrpPrice,
+discountPrice: product.discountPrice,
+bundleEligible: product.bundleEligible
+},
+quantity
+);
+
+toast({
+title: "Added to cart",
+description: `${product.name} x${quantity}`
+});
+
+setShowCartBar(true);
+
+};
+
+return (
+
+<div className="max-w-7xl mx-auto pb-40">
+
+{/* BACK */}
+
+<div className="px-4 py-3">
+<Link href="/shop">
+<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+<ChevronLeft size={16}/> Back to Shop
+</span>
+</Link>
+</div>
+
+{/* PRODUCT */}
+
+<div className="lg:grid lg:grid-cols-2 lg:gap-10 lg:px-4">
+
+{/* IMAGES */}
+
+<div>
+
+<div
+className="relative aspect-[3/4] overflow-hidden rounded-lg cursor-zoom-in"
+onTouchStart={handleTouchStart}
+onTouchEnd={handleTouchEnd}
+onClick={()=>setFullscreen(true)}
+>
+
+<img
+src={product.images[currentImage]}
+alt={product.name}
+className="w-full h-full object-cover"
+/>
+
+{discount > 0 && (
+<span className="absolute top-3 left-3 bg-maroon text-white text-xs font-bold px-3 py-1 rounded-md">
+{discount}% OFF
+</span>
+)}
+
+</div>
+
+{/* dots */}
+
+<div className="flex justify-center gap-1 mt-2">
+
+{product.images.map((_,i)=>(
+<div
+key={i}
+className={`w-2 h-2 rounded-full ${
+i===currentImage ? "bg-maroon":"bg-gray-300"
+}`}
+/>
+))}
+
+</div>
+
+{/* thumbnails */}
+
+<div className="flex gap-2 mt-3">
+
+{product.images.map((img, idx) => (
+
+<button
+key={idx}
+onClick={() => setCurrentImage(idx)}
+className={`w-16 h-16 rounded-md overflow-hidden border-2 ${
+currentImage === idx ? "border-maroon" : "border-transparent"
+}`}
+>
+
+<img src={img} className="w-full h-full object-cover"/>
+
+</button>
+
+))}
+
+</div>
+
+</div>
+
+{/* DETAILS */}
+
+<div className="px-4 lg:px-0 pb-8">
+
+<h1 className="font-heading text-2xl lg:text-3xl font-bold mb-2">
+{product.name}
+</h1>
+
+{/* rating */}
+
+<div className="flex items-center gap-2 mb-3">
+
+{[1,2,3,4,5].map(i => (
+<Star
+key={i}
+size={16}
+className={i <= Math.round(avgRating)
+? "fill-gold text-gold"
+: "text-gold/30"}
+/>
+))}
+
+<span className="text-sm text-muted-foreground">
+{avgRating.toFixed(1)} ({product.reviews?.length || 0} reviews)
+</span>
+
+</div>
+
+{/* price */}
+
+<div className="flex items-baseline gap-3 mb-2">
+
+<span className="text-3xl font-bold text-maroon">
+₹{product.discountPrice}
+</span>
+
+<span className="text-base line-through text-muted-foreground">
+₹{product.mrpPrice}
+</span>
+
+<span className="text-sm bg-green-50 text-green-700 px-2 py-0.5 rounded-md font-semibold">
+Save ₹{product.mrpPrice - product.discountPrice}
+</span>
+
+</div>
+
+{/* urgency */}
+
+<div className="text-sm mb-4 space-y-1">
+<p className="text-maroon font-semibold">
+🔥 Only {stockLeft} left in stock
+</p>
+<p className="text-muted-foreground">
+👀 {viewers} people are viewing this
+</p>
+</div>
+
+{/* delivery */}
+
+<div className="space-y-2 text-sm mb-6">
+
+<div className="flex gap-2">
+<Truck size={16}/> Free Delivery across India
+</div>
+
+<div className="flex gap-2">
+<RefreshCw size={16}/> 7 Day Easy Exchange
+</div>
+
+<div className="flex gap-2">
+<CreditCard size={16}/> Secure UPI Payment
+</div>
+
+</div>
+
+{/* SIZE */}
+
+<div className="mb-6">
+
+<h3 className="text-sm font-semibold mb-2">
+Select Size
+</h3>
+
+{sizeError && (
+<p className="text-xs text-red-600 mb-2">
+Please select a size
+</p>
+)}
+
+<div className="flex gap-2 flex-wrap">
+
+{product.sizes.map(size => (
+
+<button
+key={size}
+onClick={()=>{
+setSelectedSize(size);
+setSizeError(false);
+}}
+className={`px-4 py-2 rounded-md border text-sm font-medium ${
+selectedSize===size
+? "bg-maroon text-white border-maroon"
+: "bg-white border-gold/20"
+}`}
+>
+{size}
+</button>
+
+))}
+
+</div>
+
+</div>
+
+{/* quantity */}
+
+<div className="flex items-center gap-4 mb-6">
+
+<span className="text-sm font-semibold">
+Quantity
+</span>
+
+<div className="flex items-center border border-gold/20 rounded-md">
+
+<button
+onClick={()=>setQuantity(Math.max(1,quantity-1))}
+className="w-10 h-10 flex items-center justify-center"
+>
+<Minus size={16}/>
+</button>
+
+<span className="w-10 text-center font-semibold">
+{quantity}
+</span>
+
+<button
+onClick={()=>setQuantity(Math.min(10,quantity+1))}
+className="w-10 h-10 flex items-center justify-center"
+>
+<Plus size={16}/>
+</button>
+
+</div>
+
+</div>
+
+<Button
+onClick={handleAddToCart}
+className="w-full bg-maroon text-gold font-semibold text-base py-6"
+>
+Add to Cart
+</Button>
+
+</div>
+
+</div>
+
+{/* REVIEWS */}
+
+<section className="max-w-7xl mx-auto px-4 py-12">
+
+<h2 className="font-heading text-2xl font-bold mb-6">
+Customer Reviews
+</h2>
+
+<div className="space-y-4">
+
+{(product.reviews || []).slice(0,6).map((review, idx) => (
+
+<div
+key={idx}
+className="bg-white border border-gold/10 rounded-lg p-4"
+>
+
+<div className="flex items-center gap-2 mb-2">
+
+<span className="font-semibold">
+{review.name}
+</span>
+
+<span className="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">
+Verified Purchase
+</span>
+
+</div>
+
+<div className="flex gap-1 mb-2">
+
+{[1,2,3,4,5].map(i => (
+<Star
+key={i}
+size={14}
+className={
+i <= review.rating
+? "fill-gold text-gold"
+: "text-gold/20"
+}
+/>
+))}
+
+</div>
+
+<p className="text-sm text-muted-foreground">
+{review.text}
+</p>
+
+<button className="flex items-center gap-1 text-xs text-muted-foreground mt-2">
+<ThumbsUp size={12}/> Helpful
+</button>
+
+</div>
+
+))}
+
+</div>
+
+</section>
+
+{/* SIMILAR */}
+
+<section className="max-w-7xl mx-auto px-4 py-10">
+
+<h2 className="font-heading text-2xl font-bold mb-6">
+Similar Products
+</h2>
+
+<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+{similarProducts.map(p => (
+<ProductCard key={p.id} product={p}/>
+))}
+
+</div>
+
+</section>
+
+{/* RECOMMENDED */}
+
+<section className="max-w-7xl mx-auto px-4 py-10">
+
+<h2 className="font-heading text-2xl font-bold mb-6">
+You May Also Like
+</h2>
+
+<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+{recommendedProducts.map(p => (
+<ProductCard key={p.id} product={p}/>
+))}
+
+</div>
+
+</section>
+
+{/* FULLSCREEN */}
+
+{fullscreen && (
+
+<div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+
+<button
+onClick={()=>setFullscreen(false)}
+className="absolute top-4 right-4 text-white"
+>
+<X size={30}/>
+</button>
+
+<img
+src={product.images[currentImage]}
+className="max-h-[90vh] max-w-[95vw] object-contain"
+/>
+
+</div>
+
+)}
+
+{/* STICKY CART */}
+
+{showCartBar && (
+
+<div className="fixed bottom-0 left-0 right-0 bg-maroon text-white p-4 flex justify-between items-center z-40">
+
+<span>✔ Added to Cart</span>
+
+<Link href="/cart">
+<Button className="bg-gold text-maroon font-semibold">
+View Cart
+</Button>
+</Link>
+
+</div>
+
+)}
+
+</div>
+
+);
 }

@@ -3,10 +3,14 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+import ScrollToTop from "@/components/ScrollToTop";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCartBar from "@/components/StickyCartBar";
 import WhatsAppButton from "@/components/WhatsAppButton";
+
 import Home from "@/pages/Home";
 import Shop from "@/pages/Shop";
 import ProductDetail from "@/pages/ProductDetail";
@@ -16,6 +20,7 @@ import Payment from "@/pages/Payment";
 import OrderSuccess from "@/pages/OrderSuccess";
 import TrackOrder from "@/pages/TrackOrder";
 import Contact from "@/pages/Contact";
+import About from "@/pages/About";
 import Returns from "@/pages/Returns";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import Terms from "@/pages/Terms";
@@ -27,6 +32,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
+      <Route path="/about" component={About} />
       <Route path="/product/:slug" component={ProductDetail} />
       <Route path="/cart" component={Cart} />
       <Route path="/checkout" component={Checkout} />
@@ -47,16 +53,28 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+
+        {/* Scroll to top when route changes */}
+        <ScrollToTop />
+
         <div className="min-h-screen flex flex-col bg-cream">
+
           <Header />
+
           <main className="flex-1 pb-16">
             <Router />
           </main>
+
           <Footer />
+
           <StickyCartBar />
+
           <WhatsAppButton />
+
         </div>
+
         <Toaster />
+
       </TooltipProvider>
     </QueryClientProvider>
   );

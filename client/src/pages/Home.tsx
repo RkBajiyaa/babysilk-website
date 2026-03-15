@@ -26,167 +26,261 @@ export default function Home() {
 
   return (
     <div>
-      <section
-        className="relative min-h-[480px] sm:min-h-[540px] flex items-center justify-center overflow-hidden"
-        data-testid="section-hero"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-maroon via-maroon-dark to-maroon z-0" />
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: "url('https://picsum.photos/seed/herosilk/1200/600')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-maroon/90 via-maroon/60 to-maroon/80 z-[1]" />
-        <div className="relative z-[2] text-center px-6 max-w-2xl mx-auto">
+
+      {/* HERO */}
+      <section className="relative min-h-[520px] flex items-center justify-center overflow-hidden">
+
+        <div className="absolute inset-0 bg-gradient-to-br from-maroon via-maroon-dark to-maroon" />
+
+        <div
+          className="absolute inset-0 opacity-25"
+          style={{
+            backgroundImage: "url('https://picsum.photos/seed/herosilk/1200/600')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-maroon/90 via-maroon/60 to-maroon/80" />
+
+        <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
+
           <div className="inline-block bg-gold/20 border border-gold/40 rounded-full px-4 py-1.5 mb-6">
-            <span className="text-gold text-xs sm:text-sm font-semibold tracking-wide" data-testid="text-hero-badge">
+            <span className="text-gold text-xs sm:text-sm font-semibold tracking-wide">
               Any 3 Dresses for just Rs.1550
             </span>
           </div>
-          <h1
-            className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
-            data-testid="text-hero-title"
-          >
+
+          <h1 className="font-heading text-4xl sm:text-6xl font-bold text-white mb-4 leading-tight">
             Premium Kids
             <br />
             <span className="text-gold">Ethnic Wear</span>
           </h1>
-          <p className="text-cream-DEFAULT/80 text-base sm:text-lg mb-8 max-w-md mx-auto leading-relaxed" style={{ fontFamily: "'Poppins', sans-serif" }}>
+
+          <p className="text-cream-DEFAULT/80 text-base sm:text-lg mb-8 max-w-md mx-auto leading-relaxed">
             Beautiful Traditional Dresses for Little Stars
           </p>
+
           <Link href="/shop">
             <Button
-              className="bg-gold text-maroon-dark font-semibold px-8 py-3 rounded-md text-base"
+              className="bg-gold text-maroon-dark font-semibold px-8 py-3 rounded-md text-base shadow-md hover:scale-105 transition"
               size="lg"
-              data-testid="button-shop-now"
             >
               Shop Now
               <ChevronRight size={18} className="ml-1" />
             </Button>
           </Link>
+
         </div>
       </section>
 
-      <section className="bg-white border-y border-gold/10 py-4" data-testid="section-trust-bar">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-hide">
-            {[
-              { icon: Truck, text: "All India Delivery" },
-              { icon: RefreshCw, text: "7 Day Exchange" },
-              { icon: CreditCard, text: "Easy UPI Payment" },
-              { icon: Sparkles, text: "Premium Quality" },
-            ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-2 shrink-0 px-2">
-                <Icon size={18} className="text-teal" />
-                <span className="text-sm font-medium text-foreground/80 whitespace-nowrap">{text}</span>
-              </div>
-            ))}
+
+      {/* TRUST STRIP */}
+      <section className="bg-cream py-5 border-y border-gold/10">
+        <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-sm text-maroon">
+
+          <span className="flex items-center gap-2">
+            <Truck size={16}/> Free All India Delivery
+          </span>
+
+          <span className="flex items-center gap-2">
+            <RefreshCw size={16}/> 7 Day Exchange
+          </span>
+
+          <span className="flex items-center gap-2">
+            <CreditCard size={16}/> Secure UPI Payments
+          </span>
+
+          <span className="flex items-center gap-2">
+            <Sparkles size={16}/> Premium Quality
+          </span>
+
+        </div>
+      </section>
+
+
+      {/* SOCIAL PROOF */}
+      <section className="bg-white py-8">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-3 text-center gap-4">
+
+          <div>
+            <p className="text-xl font-bold text-maroon">5000+</p>
+            <p className="text-sm text-muted-foreground">Happy Moms</p>
           </div>
+
+          <div>
+            <p className="text-xl font-bold text-maroon">12000+</p>
+            <p className="text-sm text-muted-foreground">Dresses Sold</p>
+          </div>
+
+          <div>
+            <p className="text-xl font-bold text-maroon">4.8 ★</p>
+            <p className="text-sm text-muted-foreground">Average Rating</p>
+          </div>
+
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-12" data-testid="section-categories">
-        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-center text-maroon mb-8">
+
+      {/* CATEGORY SECTION */}
+      <section className="max-w-7xl mx-auto px-4 py-14">
+
+        <h2 className="font-heading text-3xl font-bold text-center text-maroon mb-10">
           Shop by Category
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
+
           {CATEGORIES.map(cat => (
             <Link key={cat} href={`/shop?category=${encodeURIComponent(cat)}`}>
-              <div
-                className="group relative aspect-[3/4] rounded-lg overflow-hidden cursor-pointer"
-                data-testid={`card-category-${cat.toLowerCase().replace(/\s/g, '-')}`}
-              >
+
+              <div className="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition">
+
                 <img
                   src={categoryImages[cat]}
                   alt={cat}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon/80 via-maroon/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                  <h3 className="font-heading text-sm sm:text-base font-semibold text-white leading-tight">
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"/>
+
+                <div className="absolute bottom-0 p-4 text-white">
+
+                  <h3 className="font-heading text-base font-semibold">
                     {cat}
                   </h3>
-                  <span className="text-gold text-xs font-medium mt-0.5 inline-block">Shop Now</span>
+
+                  <span className="text-gold text-xs">
+                    Shop Now
+                  </span>
+
                 </div>
+
               </div>
+
             </Link>
           ))}
+
         </div>
+
       </section>
 
-      <section className="bg-cream-dark/50 py-12" data-testid="section-trending">
+
+      {/* TRENDING PRODUCTS */}
+      <section className="bg-cream py-14">
+
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-maroon">
+
+          <div className="flex justify-between mb-8">
+
+            <h2 className="font-heading text-3xl font-bold text-maroon">
               Trending This Season
             </h2>
+
             <Link href="/shop">
               <span className="text-sm font-medium text-teal flex items-center gap-1">
-                View All <ChevronRight size={16} />
+                View All <ChevronRight size={16}/>
               </span>
             </Link>
+
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+
             {trending.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product}/>
             ))}
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="relative py-12 overflow-hidden" data-testid="section-bundle-offer">
-        <div className="absolute inset-0 bg-gradient-to-r from-gold-dark via-gold to-gold-light" />
-        <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-maroon mb-3">
-            Buy Any 3 Dresses
+
+      {/* BUNDLE OFFER */}
+      <section className="bg-white py-16">
+
+        <div className="max-w-3xl mx-auto text-center px-6 border border-gold/20 rounded-xl py-12 bg-cream shadow-sm">
+
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-maroon mb-3">
+            Festive Bundle Offer
           </h2>
-          <p className="text-maroon/80 text-lg sm:text-2xl font-bold mb-2">
+
+          <p className="text-maroon text-xl font-bold mb-1">
+            Buy Any 3 Dresses
+          </p>
+
+          <p className="text-maroon/80 text-lg mb-4">
             Pay Only Rs.1550
           </p>
-          <p className="text-maroon/60 text-sm mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
+
+          <p className="text-maroon/60 text-sm mb-6">
             Mix & Match from Any Category
           </p>
+
           <Link href="/shop">
-            <Button className="bg-maroon text-gold font-semibold px-8" size="lg" data-testid="button-shop-bundle">
+            <Button className="bg-maroon text-gold font-semibold px-8">
               Shop the Bundle
             </Button>
           </Link>
+
         </div>
+
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-12" data-testid="section-reviews">
-        <h2 className="font-heading text-2xl sm:text-3xl font-bold text-center text-maroon mb-8">
+
+      {/* REVIEWS */}
+      <section className="max-w-7xl mx-auto px-4 py-14">
+
+        <h2 className="font-heading text-3xl font-bold text-center text-maroon mb-10">
           What Moms Are Saying
         </h2>
-        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+
+        <div className="flex gap-4 overflow-x-auto pb-4">
+
           {customerReviews.map((review, idx) => (
-            <div
-              key={idx}
-              className="shrink-0 w-[280px] sm:w-[300px] bg-white rounded-lg p-5 border border-gold/10"
-              data-testid={`card-review-${idx}`}
-            >
-              <div className="flex items-center gap-0.5 mb-3">
-                {[1, 2, 3, 4, 5].map(i => (
-                  <Star key={i} size={14} className={i <= review.rating ? "fill-gold text-gold" : "text-gold/20"} />
+
+            <div key={idx} className="shrink-0 w-[280px] bg-white rounded-lg p-5 border border-gold/10 shadow-sm">
+
+              <div className="flex items-center gap-1 mb-3">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} size={14}
+                    className={i <= review.rating ? "fill-gold text-gold" : "text-gold/20"}
+                  />
                 ))}
               </div>
-              <p className="text-sm text-foreground/80 leading-relaxed mb-4" style={{ fontFamily: "'Poppins', sans-serif" }}>
+
+              <p className="text-sm text-foreground/80 mb-4">
                 "{review.text}"
               </p>
+
               <div className="flex items-center gap-3">
+
                 <div className="w-9 h-9 rounded-full bg-maroon/10 flex items-center justify-center">
-                  <span className="text-sm font-bold text-maroon">{review.name[0]}</span>
+                  <span className="text-sm font-bold text-maroon">
+                    {review.name[0]}
+                  </span>
                 </div>
+
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{review.name}</p>
-                  <p className="text-xs text-muted-foreground">{review.city}</p>
+                  <p className="text-sm font-semibold">{review.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {review.city} • Verified Purchase
+                  </p>
                 </div>
+
               </div>
+
             </div>
+
           ))}
+
         </div>
+
       </section>
+
     </div>
   );
 }
