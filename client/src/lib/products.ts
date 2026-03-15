@@ -100,11 +100,11 @@ export const ALL_PRODUCTS: ProductData[] = productDefinitions.map((p, idx) => {
   // Custom images for Kanjivaram Silk Pattu Dress
   if (p.name === "Kanjivaram Silk Pattu Dress") {
     images = [
-      "/client/public/1.1.png",
-      "/client/public/1.2.png",
-      "/client/public/1.3.png",
-      "/client/public/1.4.png",
-      "/client/public/1.5.png"
+      "https://res.cloudinary.com/doux0jv3b/image/upload/1.2_frh2th.webp",
+      "https://res.cloudinary.com/doux0jv3b/image/upload/1.1_xe6elm.webp",
+      "https://res.cloudinary.com/doux0jv3b/image/upload/1.3_wry5kr.webp",
+      "https://res.cloudinary.com/doux0jv3b/image/upload/1.5_hwzcqn.webp",
+      "https://res.cloudinary.com/doux0jv3b/image/upload/1.4_ew0wwg.webp"
     ];
   }
 
