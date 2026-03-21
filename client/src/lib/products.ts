@@ -1,4 +1,5 @@
 import type { Review } from "@shared/schema";
+import { productImagesMap } from "./productImages"; // Import your new image mapping file
 
 const reviewers = [
   { name: "Priya S.", location: "Chennai" },
@@ -54,7 +55,8 @@ function getSizes(idx: number): string[] {
   return allSizes.slice(start, start + 5 + (idx % 3));
 }
 
-function getImages(idx: number): string[] {
+// Fallback function for when a product doesn't have images in productImages.ts yet
+function getFallbackImages(idx: number): string[] {
   const base = (idx % 20) + 1;
   const img2 = ((idx + 5) % 20) + 1;
   const img3 = ((idx + 10) % 20) + 1;
@@ -84,29 +86,62 @@ interface ProductData {
   bundleEligible: boolean;
 }
 
-const productDefinitions = [
+const productDefinitions: { name: string; category: string; mrp: number; discount: number; desc: string }[] = [
   { name: "Kanjivaram Silk Pattu Dress", category: "Pattu Dresses", mrp: 1299, discount: 849, desc: "Exquisite Kanjivaram silk pattu dress with gold zari border. Perfect for temple visits and traditional ceremonies." },
   { name: "Royal Red Pattu Pavadai", category: "Pattu Dresses", mrp: 1199, discount: 799, desc: "Classic red pattu pavadai with intricate gold embroidery. A timeless piece for your little one." },
   { name: "Pink Silk Pattu Frock", category: "Pattu Dresses", mrp: 999, discount: 699, desc: "Beautiful pink silk pattu frock with contrast border. Lightweight and comfortable for all-day wear." },
   { name: "Magenta Zari Pattu Dress", category: "Pattu Dresses", mrp: 1249, discount: 829, desc: "Stunning magenta pattu dress with rich zari work. Makes your child the star of every celebration." },
   { name: "Golden Pattu Silk Frock", category: "Pattu Dresses", mrp: 1149, discount: 779, desc: "Elegant golden pattu silk frock with traditional motifs. Comfortable and stylish for festive occasions." },
   { name: "Emerald Green Pattu Dress", category: "Pattu Dresses", mrp: 1099, discount: 749, desc: "Rich emerald green pattu dress with gold border. Perfect blend of tradition and modern style." },
+  { name: "Maroon Silk Pattu Pavadai", category: "Pattu Dresses", mrp: 1299, discount: 849, desc: "Deep maroon silk pavadai with golden thread work. A regal outfit for special moments." },
+  { name: "Orange Brocade Pattu Dress", category: "Pattu Dresses", mrp: 999, discount: 679, desc: "Vibrant orange brocade pattu dress with silk finish. Bright and beautiful for poojas and events." },
+  { name: "Purple Kanchipuram Pattu", category: "Pattu Dresses", mrp: 1199, discount: 799, desc: "Regal purple Kanchipuram pattu with traditional motifs. Premium silk quality your child deserves." },
+  { name: "Peacock Blue Pattu Frock", category: "Pattu Dresses", mrp: 1149, discount: 769, desc: "Mesmerizing peacock blue pattu frock with contrast border. Unique and eye-catching design." },
+  { name: "Cream & Gold Pattu Dress", category: "Pattu Dresses", mrp: 1099, discount: 729, desc: "Elegant cream and gold pattu dress with delicate zari work. Soft and graceful for celebrations." },
+  { name: "Ruby Red Silk Pattu", category: "Pattu Dresses", mrp: 1249, discount: 839, desc: "Premium ruby red silk pattu with exclusive border design. Handpicked silk for ultimate comfort." },
+  { name: "Diwali Special Gold Kurta Set", category: "Festive Wear", mrp: 1199, discount: 799, desc: "Stunning gold kurta set perfect for Diwali celebrations. Complete with matching dupatta and churidar." },
+  { name: "Navratri Green Chaniya Choli", category: "Festive Wear", mrp: 1299, discount: 849, desc: "Vibrant green chaniya choli for Navratri dandiya nights. Mirror work and embroidery detailing." },
+  { name: "Pongal Special Silk Dress", category: "Festive Wear", mrp: 999, discount: 699, desc: "Traditional silk dress designed for Pongal festivities. Bright colors and comfortable fit." },
+  { name: "Onam White & Gold Set", category: "Festive Wear", mrp: 1149, discount: 779, desc: "Classic white and gold Kerala-style set for Onam celebrations. Pure elegance for your little one." },
+  { name: "Rakhi Special Pink Anarkali", category: "Festive Wear", mrp: 1099, discount: 749, desc: "Beautiful pink anarkali for Rakhi celebrations. Flowing silhouette with delicate embroidery." },
+  { name: "Ganesh Chaturthi Yellow Dress", category: "Festive Wear", mrp: 999, discount: 679, desc: "Auspicious yellow dress for Ganesh Chaturthi. Traditional design with modern comfort." },
+  { name: "Makar Sankranti Orange Pavadai", category: "Festive Wear", mrp: 1199, discount: 799, desc: "Bright orange pavadai perfect for Sankranti celebrations. Silk fabric with gold border." },
+  { name: "Ugadi Special Purple Set", category: "Festive Wear", mrp: 1099, discount: 749, desc: "Elegant purple ethnic set for Ugadi celebrations. Premium fabric with beautiful embellishments." },
+  { name: "Holi Festive Rainbow Lehenga", category: "Festive Wear", mrp: 1249, discount: 829, desc: "Colorful rainbow lehenga perfect for Holi celebrations. Vibrant and fun for little fashionistas." },
+  { name: "Vishu Golden Kasavu Set", category: "Festive Wear", mrp: 1149, discount: 779, desc: "Traditional golden kasavu set for Vishu celebrations. Kerala-inspired design with silk finish." },
+  { name: "Royal Blue Lehenga Choli", category: "Lehenga Sets", mrp: 1299, discount: 849, desc: "Magnificent royal blue lehenga choli with gold work. Perfect for weddings and grand celebrations." },
+  { name: "Pink Floral Lehenga Set", category: "Lehenga Sets", mrp: 1199, discount: 799, desc: "Charming pink floral lehenga with matching choli and dupatta. Delicate and feminine design." },
+  { name: "Red Bridal Mini Lehenga", category: "Lehenga Sets", mrp: 1249, discount: 829, desc: "Adorable red bridal-style mini lehenga for little girls. Rich embroidery and premium fabric." },
+  { name: "Turquoise Silk Lehenga", category: "Lehenga Sets", mrp: 1149, discount: 779, desc: "Stunning turquoise silk lehenga with intricate border. A standout piece for celebrations." },
+  { name: "Lavender Net Lehenga Set", category: "Lehenga Sets", mrp: 999, discount: 699, desc: "Dreamy lavender net lehenga with sequin work. Light and airy for comfortable wearing." },
+  { name: "Mustard Yellow Lehenga", category: "Lehenga Sets", mrp: 1099, discount: 749, desc: "Beautiful mustard yellow lehenga with contrast dupatta. Vibrant and cheerful festive wear." },
+  { name: "Wine Velvet Lehenga Set", category: "Lehenga Sets", mrp: 1299, discount: 849, desc: "Luxurious wine velvet lehenga for winter celebrations. Rich texture and royal appearance." },
+  { name: "Peach Brocade Lehenga", category: "Lehenga Sets", mrp: 1149, discount: 779, desc: "Elegant peach brocade lehenga with self-design pattern. Subtle yet stunning for events." },
+  { name: "Classic Red Cotton Frock", category: "Traditional Frocks", mrp: 999, discount: 679, desc: "Classic red cotton frock with traditional print. Comfortable for everyday ethnic wear." },
+  { name: "Green Silk Traditional Frock", category: "Traditional Frocks", mrp: 1099, discount: 749, desc: "Beautiful green silk frock with traditional motifs. Perfect blend of comfort and style." },
+  { name: "Blue Printed Ethnic Frock", category: "Traditional Frocks", mrp: 949, discount: 649, desc: "Charming blue printed ethnic frock with lace trim. Easy to wear and maintain." },
+  { name: "Yellow Chanderi Frock", category: "Traditional Frocks", mrp: 1049, discount: 719, desc: "Lovely yellow chanderi frock with gold details. Lightweight fabric for all-day comfort." },
+  { name: "Coral Embroidered Frock", category: "Traditional Frocks", mrp: 999, discount: 689, desc: "Pretty coral frock with delicate embroidery work. A beautiful addition to your child's wardrobe." },
+  { name: "Mint Green Angrakha Frock", category: "Traditional Frocks", mrp: 1099, discount: 749, desc: "Trendy mint green angrakha-style frock. Fusion design that works for traditional and casual wear." },
+  { name: "Burgundy Silk Frock", category: "Traditional Frocks", mrp: 1149, discount: 769, desc: "Rich burgundy silk frock with contrast piping. Elegant and easy to pair with accessories." },
+  { name: "Teal Bandhani Print Frock", category: "Traditional Frocks", mrp: 999, discount: 679, desc: "Authentic teal bandhani print frock from Rajasthan. Vibrant traditional art on comfortable cotton." },
+  { name: "Sparkle Gold Party Dress", category: "Party Wear", mrp: 1299, discount: 849, desc: "Glamorous gold party dress with sparkle finish. Make your little one shine at every party." },
+  { name: "Silver Sequin Gown", category: "Party Wear", mrp: 1249, discount: 829, desc: "Dazzling silver sequin gown for special occasions. Princess-worthy dress for birthday parties." },
+  { name: "Rose Pink Party Frock", category: "Party Wear", mrp: 1099, discount: 749, desc: "Beautiful rose pink party frock with tulle layers. Fairy-tale dress for little princesses." },
+  { name: "Navy Blue Velvet Dress", category: "Party Wear", mrp: 1199, discount: 799, desc: "Elegant navy blue velvet dress for winter parties. Luxurious fabric with beautiful drape." },
+  { name: "Champagne Tulle Gown", category: "Party Wear", mrp: 1149, discount: 779, desc: "Ethereal champagne tulle gown with pearl details. Perfect for flower girl duties and events." },
+  { name: "Black & Gold Party Dress", category: "Party Wear", mrp: 1299, discount: 849, desc: "Sophisticated black and gold party dress. Bold and beautiful for confident little fashionistas." },
+  { name: "Spring Blossom Silk Dress", category: "New Arrivals", mrp: 1199, discount: 799, desc: "Fresh spring collection silk dress with blossom prints. New design just launched this season." },
+  { name: "Summer Breeze Cotton Set", category: "New Arrivals", mrp: 999, discount: 679, desc: "Light and airy cotton ethnic set for summer. Breathable fabric in trending pastel shades." },
+  { name: "Monsoon Magic Silk Frock", category: "New Arrivals", mrp: 1099, discount: 749, desc: "New monsoon collection silk frock with peacock motifs. Inspired by the beauty of Indian rains." },
+  { name: "Festive Fusion Crop Top Set", category: "New Arrivals", mrp: 1149, discount: 779, desc: "Trendy crop top lehenga set blending modern and traditional. Latest addition to our collection." },
+  { name: "Heritage Weave Pavadai", category: "New Arrivals", mrp: 1249, discount: 829, desc: "Newly launched heritage weave pavadai with handloom fabric. Celebrating Indian textile traditions." },
+  { name: "Blossom Garden Anarkali", category: "New Arrivals", mrp: 1199, discount: 799, desc: "Brand new floral anarkali with garden-inspired prints. Fresh design for the new season." },
 ];
 
 export const ALL_PRODUCTS: ProductData[] = productDefinitions.map((p, idx) => {
-
-  let images = getImages(idx);
-
-  // Custom images for Kanjivaram Silk Pattu Dress
-  if (p.name === "Kanjivaram Silk Pattu Dress") {
-    images = [
-      "https://res.cloudinary.com/doux0jv3b/image/upload/1.2_frh2th.webp",
-      "https://res.cloudinary.com/doux0jv3b/image/upload/1.1_xe6elm.webp",
-      "https://res.cloudinary.com/doux0jv3b/image/upload/1.3_wry5kr.webp",
-      "https://res.cloudinary.com/doux0jv3b/image/upload/1.5_hwzcqn.webp",
-      "https://res.cloudinary.com/doux0jv3b/image/upload/1.4_ew0wwg.webp"
-    ];
-  }
+  // Check productImagesMap for custom images, otherwise use fallback
+  const images = productImagesMap[p.name] || getFallbackImages(idx);
 
   return {
     id: idx + 1,
@@ -121,7 +156,6 @@ export const ALL_PRODUCTS: ProductData[] = productDefinitions.map((p, idx) => {
     reviews: getReviews(idx),
     bundleEligible: true,
   };
-
 });
 
 export function getProductBySlug(slug: string): ProductData | undefined {
