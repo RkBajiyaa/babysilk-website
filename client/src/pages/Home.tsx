@@ -6,12 +6,12 @@ import { CATEGORIES } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 
 const categoryImages: Record<string, string> = {
-  "Pattu Dresses": "https://picsum.photos/seed/pattu/300/400",
-  "Festive Wear": "https://picsum.photos/seed/festive/300/400",
-  "Lehenga Sets": "https://picsum.photos/seed/lehenga/300/400",
-  "Traditional Frocks": "https://picsum.photos/seed/frocks/300/400",
-  "Party Wear": "https://picsum.photos/seed/party/300/400",
-  "New Arrivals": "https://picsum.photos/seed/newarr/300/400",
+  "Pattu Dresses": "https://res.cloudinary.com/doux0jv3b/image/upload/a_btev1u.webp",
+  "Festive Wear": "https://res.cloudinary.com/doux0jv3b/image/upload/b_wqxyfv.webp",
+  "Lehenga Sets": "https://res.cloudinary.com/doux0jv3b/image/upload/c_oxgcbt.webp",
+  "Traditional Frocks": "https://res.cloudinary.com/doux0jv3b/image/upload/d_vrbzdd.webp",
+  "Party Wear": "https://res.cloudinary.com/doux0jv3b/image/upload/e_moni40.webp",
+  "New Arrivals": "https://res.cloudinary.com/doux0jv3b/image/upload/f_gpkgrd.webp" 
 };
 
 const customerReviews = [

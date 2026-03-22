@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const UPI_ID = "babysilk@upi";
+const UPI_ID = "9187418323@axl";
 
 export default function Payment() {
 

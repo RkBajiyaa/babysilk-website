@@ -60,6 +60,74 @@ export const productImagesMap: Record<string, string[]> = {
     "https://res.cloudinary.com/doux0jv3b/image/upload/9.4_g0dfye.webp",
     "https://res.cloudinary.com/doux0jv3b/image/upload/9.5_jvv8ex.webp"
   ],
+
+  //model with images here for same 9 products 
+  "Kanjivaram Silk Pattu Dress-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/1.5_hwzcqn.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/1.4_ew0wwg.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/1.2_frh2th.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/1.1_xe6elm.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/1.3_wry5kr.webp"
+  ],
+  "Royal Red Pattu Pavadai-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/2.4_vgupff.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/2.1_o6pdpu.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/2.2_dfn8vo.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/2.3_n44fh0.webp",
+    
+  ],
+  "Pink Silk Pattu Frock-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/3.5_vmtnu7.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/3.1_jwotxz.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/3.2_l8rhnw.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/3.3_dgevo2.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/3.4_nuts4c.webp",
+  ],
+  "Magenta Zari Pattu Dress-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/4.5_u5o7j2.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/4.1_yxihzj.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/4.2_irpdg1.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/4.3_lcwrpc.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/4.4_zumtbt.webp",
+  ],
+  "Golden Pattu Silk Frock-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/5.4_pqb52r.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/5.1_wohmkt.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/5.2_uyrcir.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/5.3_ruz4xl.webp",
+
+  ],
+  "Emerald Green Pattu Dress-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/6.5_efkz8s.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/6.1_z9uizm.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/6.2_smm4m1.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/6.3_oqmph2.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/6.4_ocv2jo.webp",
+
+  ],
+  "Maroon Silk Pattu Pavadai-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/7.4_ctd6sq.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/7.1_brbqxk.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/7.2_fzfnzb.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/7.3_unjnd3.webp",
+
+  ],
+  "Orange Brocade Pattu Dress-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/8.4_niaflg.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/8.1_lycibn.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/8.2_ci8lig.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/8.3_vugf5j.webp",
+
+  ],
+  "Purple Kanchipuram Pattu-model": [
+    "https://res.cloudinary.com/doux0jv3b/image/upload/9.4_g0dfye.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/9.1_u7zrjm.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/9.2_i4xtgk.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/9.3_tjukel.webp",
+    "https://res.cloudinary.com/doux0jv3b/image/upload/9.5_jvv8ex.webp",
+  ],
+
+
   "Peacock Blue Pattu Frock": [],
   "Cream & Gold Pattu Dress": [],
   "Ruby Red Silk Pattu": [],
