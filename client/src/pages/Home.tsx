@@ -132,7 +132,7 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
 
           {CATEGORIES.map(cat => (
-            <Link key={cat} href={`/shop?category=${encodeURIComponent(cat)}`}>
+            <Link key={cat} href="/shop">
 
               <div className="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition">
 
@@ -194,42 +194,53 @@ export default function Home() {
 
           </div>
 
-        </div>
-
-      </section>
-
-
-      {/* BUNDLE OFFER */}
-      <section className="bg-white py-16">
-
-        <div className="max-w-3xl mx-auto text-center px-6 border border-gold/20 rounded-xl py-12 bg-cream shadow-sm">
-
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-maroon mb-3">
-            Festive Bundle Offer
-          </h2>
-
-          <p className="text-maroon text-xl font-bold mb-1">
-            Buy Any 3 Dresses
-          </p>
-
-          <p className="text-maroon/80 text-lg mb-4">
-            Pay Only Rs.1550
-          </p>
-
-          <p className="text-maroon/60 text-sm mb-6">
-            Mix & Match from Any Category
-          </p>
-
-          <Link href="/shop">
-            <Button className="bg-maroon text-gold font-semibold px-8">
-              Shop the Bundle
-            </Button>
-          </Link>
+          {/* ADDED: View More Button */}
+          <div className="mt-12 flex justify-center">
+            <Link href="/shop">
+              <Button 
+                variant="outline" 
+                className="border-maroon text-maroon hover:bg-maroon hover:text-cream-DEFAULT px-10 py-6 rounded-full font-semibold transition-all duration-300"
+              >
+                View More Products
+              </Button>
+            </Link>
+          </div>
 
         </div>
 
       </section>
 
+
+      {/* REDESIGNED BUNDLE OFFER */}
+<section className="w-full bg-gradient-to-br from-[#7B1C1C] to-[#4A1212] py-16">
+  <div className="max-w-4xl mx-auto px-4 text-center flex flex-col items-center">
+    
+    <div className="inline-block bg-gold/20 border border-gold/40 rounded-full px-4 py-1.5 mb-6">
+      <span className="text-gold text-sm font-bold tracking-wide uppercase">
+        🎉 Limited Period Offer
+      </span>
+    </div>
+
+    <h2 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
+      Buy Any 3 Dresses
+    </h2>
+
+    <p className="text-2xl md:text-3xl font-bold text-gold mb-4">
+      Pay Only ₹1550 <span className="text-gold/80 text-xl md:text-2xl font-semibold">— Save up to ₹1350</span>
+    </p>
+
+    <p className="text-white/90 text-lg mb-8">
+      Mix & Match from Any Category • No Minimum Order
+    </p>
+
+    <Link href="/shop">
+      <Button className="bg-gold text-maroon-dark hover:bg-[#ffe066] font-bold px-8 py-6 text-lg rounded-full shadow-lg transition-transform hover:scale-105">
+        Shop the Bundle →
+      </Button>
+    </Link>
+
+  </div>
+</section>
 
       {/* REVIEWS */}
       <section className="max-w-7xl mx-auto px-4 py-14">
@@ -238,7 +249,7 @@ export default function Home() {
           What Moms Are Saying
         </h2>
 
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
 
           {customerReviews.map((review, idx) => (
 

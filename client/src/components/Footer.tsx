@@ -106,11 +106,11 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-white/70">
 
               <p>
-                WhatsApp: +91 99999 99999
+                WhatsApp: +91 96801 03657
               </p>
 
               <p>
-                Email: hello@babysilk.in
+                Email: babysilkshop@gmail.com
               </p>
 
               <p>
@@ -124,7 +124,7 @@ export default function Footer() {
             <div className="mt-6">
 
               <a
-                href="https://wa.me/919999999999?text=Hello%2C+I+need+help+with+my+order"
+                href="https://wa.me/919680103657?text=Hello%2C+I+need+help+with+my+order"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-md text-sm font-medium transition-all hover:scale-[1.02]"

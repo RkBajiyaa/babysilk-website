@@ -90,19 +90,25 @@ export const INDIAN_STATES = [
   "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
 ];
 
+// UPDATED SIZE CHART WITH XS-XL
 export const SIZE_CHART = [
-  { label: "0-3 Months", age: "0-3 mo", chest: 40, length: 40 },
-  { label: "3-6 Months", age: "3-6 mo", chest: 42, length: 44 },
-  { label: "6-9 Months", age: "6-9 mo", chest: 44, length: 47 },
-  { label: "9-12 Months", age: "9-12 mo", chest: 46, length: 50 },
-  { label: "1-2 Years", age: "1-2 yrs", chest: 50, length: 55 },
-  { label: "2-3 Years", age: "2-3 yrs", chest: 54, length: 60 },
-  { label: "3-4 Years", age: "3-4 yrs", chest: 58, length: 65 },
-  { label: "4-5 Years", age: "4-5 yrs", chest: 62, length: 70 },
-  { label: "5-6 Years", age: "5-6 yrs", chest: 66, length: 75 },
-  { label: "6-7 Years", age: "6-7 yrs", chest: 70, length: 80 },
-  { label: "7-8 Years", age: "7-8 yrs", chest: 74, length: 86 },
-  { label: "8-10 Years", age: "8-10 yrs", chest: 78, length: 92 },
+  { label: "1-3 Months",  age: "1–3 mo",   chest: 38, length: 38 },
+  { label: "3-6 Months",  age: "3–6 mo",   chest: 40, length: 42 },
+  { label: "6-9 Months",  age: "6–9 mo",   chest: 42, length: 45 },
+  { label: "9-12 Months", age: "9–12 mo",  chest: 44, length: 48 },
+  { label: "1-2 Years",   age: "1–2 yrs",  chest: 48, length: 53 },
+  { label: "2-3 Years",   age: "2–3 yrs",  chest: 52, length: 58 },
+  { label: "3-4 Years",   age: "3–4 yrs",  chest: 56, length: 63 },
+  { label: "4-5 Years",   age: "4–5 yrs",  chest: 60, length: 68 },
+  { label: "5-6 Years",   age: "5–6 yrs",  chest: 64, length: 73 },
+  { label: "6-7 Years",   age: "6–7 yrs",  chest: 68, length: 78 },
+  { label: "7-8 Years",   age: "7–8 yrs",  chest: 72, length: 84 },
+  { label: "8-10 Years",  age: "8–10 yrs", chest: 76, length: 90 },
+  { label: "XS",  age: "~4–5 yrs", chest: 60, length: 70 },
+  { label: "S",   age: "~5–6 yrs", chest: 64, length: 75 },
+  { label: "M",   age: "~6–8 yrs", chest: 68, length: 82 },
+  { label: "L",   age: "~8–10 yrs",chest: 74, length: 90 },
+  { label: "XL",  age: "~10+ yrs", chest: 80, length: 98 },
 ];
 
 export const CATEGORIES = [
