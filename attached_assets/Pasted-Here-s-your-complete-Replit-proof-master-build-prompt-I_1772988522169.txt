@@ -306,7 +306,7 @@ Payment buttons (large, icon + label):
 Each button generates UPI deep link:
   upi://pay?pa=CLIENT_UPI_ID&pn=Little+Studio+Baby&am=TOTAL&tn=ORDER_ID
 
-  Replace CLIENT_UPI_ID with: littlestudiobaby@upi (placeholder)
+  Replace CLIENT_UPI_ID with: gpay-12192151965@okbizaxis (placeholder)
   
 ON MOBILE: Button opens UPI app directly.
 ON DESKTOP: Show modal with:
