@@ -311,7 +311,7 @@ Each button generates UPI deep link:
 ON MOBILE: Button opens UPI app directly.
 ON DESKTOP: Show modal with:
   - QR code (use a QR library or static placeholder)
-  - UPI ID displayed as text: littlestudiobaby@upi
+  - UPI ID displayed as text: gpay-12192151965@okbizaxis
   - "Copy UPI ID" button
   - Instructions: "Open any UPI app, scan QR or enter UPI ID, 
     pay ₹XXXX, then come back and submit payment proof."
@@ -605,9 +605,9 @@ ENVIRONMENT VARIABLES (use .env.local)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_GA_ID=your_ga4_id
-NEXT_PUBLIC_UPI_ID=littlestudiobaby@upi
+NEXT_PUBLIC_UPI_ID=gpay-12192151965@okbizaxis
 NEXT_PUBLIC_UPI_NAME=Little+Studio+Baby
-NEXT_PUBLIC_WHATSAPP_NUMBER=919999999999
+NEXT_PUBLIC_WHATSAPP_NUMBER=919680103657
 ADMIN_PASSWORD=LSBAdmin2024
 CLOUDINARY_CLOUD_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_key
