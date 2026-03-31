@@ -13,15 +13,18 @@ declare module "http" {
   }
 }
 
+// 🔥 FIXED: Increased JSON payload limit to 50mb for Base64 screenshots
 app.use(
   express.json({
+    limit: '50mb', 
     verify: (req: any, _res, buf) => {
       req.rawBody = buf;
     },
   }),
 );
 
-app.use(express.urlencoded({ extended: false }));
+// 🔥 FIXED: Increased URL-encoded limit to 50mb as well
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

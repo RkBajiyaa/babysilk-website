@@ -1,0 +1,4 @@
+export const SITE_CONFIG = {
+  UPI_ID: "9187418323@axl",      
+  WHATSAPP_NUMBER: "919680103657", 
+};

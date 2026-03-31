@@ -1,3 +1,4 @@
+import React from "react"; 
 import { useParams, Link } from "wouter";
 import { useState } from "react";
 import {
@@ -18,7 +19,8 @@ import { addToCart } from "@/lib/cart";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
-import { SIZE_CHART } from "@shared/schema"; // Imported the size chart!
+import { SIZE_CHART } from "@shared/schema"; 
+import { SITE_CONFIG } from "@/config/siteConfig"; 
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -31,7 +33,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [sizeError, setSizeError] = useState(false);
   const [showCartBar, setShowCartBar] = useState(false);
-  const [showSizeGuide, setShowSizeGuide] = useState(false); // State for our new Size Guide
+  const [showSizeGuide, setShowSizeGuide] = useState(false); 
 
   const [touchStart, setTouchStart] = useState(0);
 
@@ -55,7 +57,6 @@ export default function ProductDetail() {
   const stockLeft = (product.id % 5) + 4;
   const viewers = (product.id % 16) + 18;
 
-  /* swipe */
   const handleTouchStart = (e: any) => {
     setTouchStart(e.touches[0].clientX);
   };
@@ -73,25 +74,20 @@ export default function ProductDetail() {
     }
   };
 
-  /* suggestions */
-  /* first try same category */
   let similarProducts = ALL_PRODUCTS
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  /* fallback if empty */
   if (similarProducts.length === 0) {
     similarProducts = ALL_PRODUCTS
       .filter(p => p.id !== product.id)
       .slice(0, 4);
   }
 
-  /* recommended */
   const recommendedProducts = ALL_PRODUCTS
     .filter(p => p.id !== product.id)
     .slice(4, 8);
 
-  /* add to cart */
   const handleAddToCart = () => {
     if (!selectedSize) {
       setSizeError(true);
@@ -127,7 +123,6 @@ export default function ProductDetail() {
   return (
     <div className="max-w-7xl mx-auto pb-40">
       
-      {/* BACK */}
       <div className="px-4 py-4">
         <Link href="/shop">
           <span className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-maroon transition-colors cursor-pointer">
@@ -136,10 +131,8 @@ export default function ProductDetail() {
         </Link>
       </div>
 
-      {/* PRODUCT */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:px-4">
         
-        {/* IMAGES */}
         <div className="mb-8 lg:mb-0">
           <div
             className="relative aspect-[3/4] overflow-hidden rounded-xl cursor-zoom-in bg-cream-DEFAULT border border-gold/10 shadow-sm"
@@ -159,7 +152,6 @@ export default function ProductDetail() {
             )}
           </div>
 
-          {/* dots (mobile mostly) */}
           <div className="flex justify-center gap-1.5 mt-4 lg:hidden">
             {product.images.map((_, i) => (
               <div
@@ -171,7 +163,6 @@ export default function ProductDetail() {
             ))}
           </div>
 
-          {/* thumbnails (scrollable if many) */}
           <div className="flex gap-3 mt-4 overflow-x-auto scrollbar-hide pb-2 px-4 lg:px-0">
             {product.images.map((img, idx) => (
               <button
@@ -187,14 +178,12 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* DETAILS */}
         <div className="px-4 lg:px-0 pb-8">
           
           <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 text-foreground leading-tight">
             {product.name}
           </h1>
 
-          {/* rating */}
           <div className="flex items-center gap-2 mb-4">
             <div className="flex">
               {[1, 2, 3, 4, 5].map(i => (
@@ -210,7 +199,6 @@ export default function ProductDetail() {
             </span>
           </div>
 
-          {/* price */}
           <div className="flex items-baseline gap-3 mb-3">
             <span className="text-3xl font-bold text-maroon">
               ₹{product.discountPrice.toLocaleString("en-IN")}
@@ -223,14 +211,12 @@ export default function ProductDetail() {
             </span>
           </div>
 
-          {/* Bundle Nudge Upgrade */}
           {product.bundleEligible && (
             <div className="inline-block bg-gold/20 text-maroon-dark text-sm font-bold px-3 py-1 rounded-md mb-5 border border-gold/30">
               ✨ Eligible for 3 for ₹1550 Bundle
             </div>
           )}
 
-          {/* urgency */}
           <div className="text-sm mb-6 space-y-1.5 p-3 bg-cream rounded-lg border border-gold/20">
             <p className="text-maroon font-bold flex items-center gap-2">
               🔥 Only {stockLeft} left in stock
@@ -240,11 +226,9 @@ export default function ProductDetail() {
             </p>
           </div>
 
-          {/* SIZE SELECTION */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-base font-bold text-foreground">Select Size</h3>
-              {/* SIZE GUIDE BUTTON */}
               <button 
                 onClick={() => setShowSizeGuide(!showSizeGuide)} 
                 className="flex items-center gap-1 text-sm text-maroon hover:text-maroon-dark font-semibold underline underline-offset-4"
@@ -280,7 +264,6 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* EXPANDABLE SIZE CHART TABLE */}
           {showSizeGuide && SIZE_CHART && (
             <div className="mb-6 overflow-x-auto border border-gold/30 rounded-lg shadow-sm animate-fade-in bg-white">
               <table className="w-full text-left text-sm whitespace-nowrap">
@@ -306,7 +289,6 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* quantity */}
           <div className="flex items-center gap-4 mb-6">
             <span className="text-base font-bold text-foreground">Quantity</span>
             <div className="flex items-center bg-white border border-gold/30 rounded-lg shadow-sm">
@@ -335,12 +317,10 @@ export default function ProductDetail() {
             Add to Cart
           </Button>
 
-               {/* THE UPDATED CUSTOM SIZE BOX */}
           <div className="bg-gold/10 border border-gold/30 rounded-lg p-4 text-sm text-maroon mt-4 shadow-sm text-center leading-relaxed">
             📏 <strong>Custom Size Available</strong> — Please select the closest size and share your exact measurements or instructions in the <strong>Order Notes</strong> at checkout. We'll connect before completing the order, Thank you for shopping with us!
           </div>
 
-          {/* delivery strips */}
           <div className="space-y-3 text-sm mt-8 pt-6 border-t border-gold/20 font-medium text-foreground">
             <div className="flex items-center gap-3 bg-white p-3 rounded-lg border border-gold/10">
               <Truck size={18} className="text-maroon"/> Free Delivery across India
@@ -356,7 +336,6 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* REVIEWS */}
       <section className="max-w-7xl mx-auto px-4 py-16 mt-8 bg-cream border-y border-gold/10">
         <h2 className="font-heading text-3xl font-bold mb-8 text-center text-maroon">
           Customer Reviews
@@ -390,7 +369,6 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* SIMILAR */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="font-heading text-3xl font-bold mb-8 text-maroon text-center">
           Similar Products
@@ -402,7 +380,6 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* RECOMMENDED */}
       <section className="max-w-7xl mx-auto px-4 py-8 mb-12">
         <h2 className="font-heading text-3xl font-bold mb-8 text-maroon text-center">
           You May Also Like
@@ -414,7 +391,6 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* FULLSCREEN IMAGE MODAL */}
       {fullscreen && (
         <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
           <button
@@ -431,7 +407,6 @@ export default function ProductDetail() {
         </div>
       )}
 
-      {/* STICKY CART BAR */}
       {showCartBar && (
         <div className="fixed bottom-0 left-0 right-0 bg-maroon/95 backdrop-blur-md text-gold p-4 flex justify-between items-center z-40 border-t border-gold/20 shadow-[0_-10px_30px_rgba(0,0,0,0.15)] animate-slide-up">
           <span className="font-bold flex items-center gap-2">

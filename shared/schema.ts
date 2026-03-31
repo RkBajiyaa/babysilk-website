@@ -29,9 +29,15 @@ export const orders = pgTable("orders", {
   state: text("state").notNull(),
   pincode: text("pincode").notNull(),
   totalAmount: integer("total_amount").notNull(),
-  paymentStatus: text("payment_status").notNull().default("pending"),
+  
+  // 🔥 UPDATED: Now defaults to pending_payment for our new flow
+  paymentStatus: text("payment_status").notNull().default("pending_payment"),
   orderStatus: text("order_status").notNull().default("order_placed"),
-  upiTransactionId: text("upi_transaction_id"),
+  upiTransactionId: text("upi_transaction_id"), // We will use this as our UTR field
+  
+  // 🔥 NEW: Field to store the payment screenshot
+  paymentScreenshot: text("payment_screenshot"),
+  
   notes: text("notes"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

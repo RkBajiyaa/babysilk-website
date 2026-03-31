@@ -80,9 +80,11 @@ export async function registerRoutes(
           state: validated.state,
           pincode: validated.pincode,
           totalAmount: serverTotal,
-          paymentStatus: "pending",
+          // 🔥 CHANGED: Now using the new master flow default
+          paymentStatus: "pending_payment",
           orderStatus: "order_placed",
           upiTransactionId: null,
+          paymentScreenshot: null, // Initialized as null
           notes: null,
         },
         items.map((item: any) => ({
@@ -105,14 +107,16 @@ export async function registerRoutes(
     }
   });
 
+  // 🔥 UPDATED: User submitting UTR / Screenshot
   app.patch("/api/orders/:orderId/payment", async (req, res) => {
     try {
       const { orderId } = req.params;
-      const { upiTransactionId, paymentStatus } = req.body;
+      const { upiTransactionId, paymentScreenshot } = req.body; // Added screenshot
 
       const updated = await storage.updateOrderPayment(orderId, {
         upiTransactionId,
-        paymentStatus: paymentStatus || "payment_verification_pending",
+        paymentScreenshot, // Passing screenshot to DB
+        paymentStatus: "payment_submitted", // Forcing the new status
       });
 
       if (!updated) {
@@ -123,6 +127,26 @@ export async function registerRoutes(
     } catch (error: any) {
       console.error("Payment update error:", error);
       res.status(500).json({ message: "Failed to update payment" });
+    }
+  });
+
+  // 🔥 NEW: Admin clicking "Mark as Paid"
+  app.patch("/api/admin/orders/:orderId/mark-paid", requireAdmin, async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      
+      const updated = await storage.updateOrderPayment(orderId, {
+        paymentStatus: "paid"
+      });
+
+      if (!updated) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      res.json({ success: true, updated });
+    } catch (error: any) {
+      console.error("Admin mark paid error:", error);
+      res.status(500).json({ message: "Failed to mark as paid" });
     }
   });
 
@@ -148,6 +172,7 @@ export async function registerRoutes(
         city: result.order.city,
         state: result.order.state,
         items: result.items,
+        // Optional: you could send back upiTransactionId/paymentScreenshot here if needed in UI later
       });
     } catch (error: any) {
       console.error("Track order error:", error);

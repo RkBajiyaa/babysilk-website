@@ -20,7 +20,9 @@ export interface IStorage {
   createOrder(order: InsertOrder, items: InsertOrderItem[]): Promise<Order>;
   getOrderByIdAndPhone(orderId: string, phone: string): Promise<{ order: Order; items: OrderItem[] } | undefined>;
   getOrderById(orderId: string): Promise<Order | undefined>;
-  updateOrderPayment(orderId: string, data: { upiTransactionId?: string; paymentStatus?: string }): Promise<Order | undefined>;
+  
+  // 🔥 UPDATED: Added paymentScreenshot to interface
+  updateOrderPayment(orderId: string, data: { upiTransactionId?: string; paymentStatus?: string; paymentScreenshot?: string | null }): Promise<Order | undefined>;
   updateOrderStatus(orderId: string, data: { orderStatus?: string; notes?: string }): Promise<Order | undefined>;
   getAllOrders(): Promise<(Order & { items: OrderItem[] })[]>;
   getOrderStats(): Promise<{ totalOrders: number; pendingPayments: number; todayOrders: number; totalRevenue: number }>;
@@ -56,10 +58,12 @@ export class DatabaseStorage implements IStorage {
     return order;
   }
 
-  async updateOrderPayment(orderId: string, data: { upiTransactionId?: string; paymentStatus?: string }): Promise<Order | undefined> {
+  // 🔥 UPDATED: Saving the screenshot to the database
+  async updateOrderPayment(orderId: string, data: { upiTransactionId?: string; paymentStatus?: string; paymentScreenshot?: string | null }): Promise<Order | undefined> {
     const updateData: any = {};
-    if (data.upiTransactionId) updateData.upiTransactionId = data.upiTransactionId;
-    if (data.paymentStatus) updateData.paymentStatus = data.paymentStatus;
+    if (data.upiTransactionId !== undefined) updateData.upiTransactionId = data.upiTransactionId;
+    if (data.paymentStatus !== undefined) updateData.paymentStatus = data.paymentStatus;
+    if (data.paymentScreenshot !== undefined) updateData.paymentScreenshot = data.paymentScreenshot;
 
     const [updated] = await db.update(orders).set(updateData).where(eq(orders.orderId, orderId)).returning();
     return updated;
@@ -90,7 +94,9 @@ export class DatabaseStorage implements IStorage {
 
   async getOrderStats(): Promise<{ totalOrders: number; pendingPayments: number; todayOrders: number; totalRevenue: number }> {
     const [totalResult] = await db.select({ count: count() }).from(orders);
-    const [pendingResult] = await db.select({ count: count() }).from(orders).where(eq(orders.paymentStatus, "payment_verification_pending"));
+    
+    // 🔥 UPDATED: Counting orders that have submitted proof for Admin Review
+    const [pendingResult] = await db.select({ count: count() }).from(orders).where(eq(orders.paymentStatus, "payment_submitted"));
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -99,7 +105,7 @@ export class DatabaseStorage implements IStorage {
     );
 
     const [revenueResult] = await db.select({ total: sum(orders.totalAmount) }).from(orders).where(
-      sql`${orders.paymentStatus} != 'pending'`
+      sql`${orders.paymentStatus} = 'paid'`
     );
 
     return {
