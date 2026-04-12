@@ -3,7 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { checkoutFormSchema } from "@shared/schema";
 import { z } from "zod";
-import session from "express-session";
+
+// ❌ REMOVED express-session
 
 function generateOrderId(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -14,14 +15,12 @@ function generateOrderId(): string {
   return result;
 }
 
-declare module "express-session" {
-  interface SessionData {
-    isAdmin?: boolean;
-  }
-}
-
+// ✅ NEW TOKEN-BASED ADMIN AUTH
 function requireAdmin(req: Request, res: Response, next: NextFunction) {
-  if (req.session && req.session.isAdmin) {
+  const token = req.headers["x-admin-token"] as string;
+  const adminPassword = process.env.ADMIN_PASSWORD || "BSKAdmin2024";
+
+  if (token === adminPassword) {
     next();
   } else {
     res.status(401).json({ message: "Unauthorized" });
@@ -33,10 +32,14 @@ function calculateServerBundlePrice(items: { price: number; quantity: number }[]
   const bundles = Math.floor(totalCount / 3);
   const remaining = totalCount % 3;
 
-  const allPrices = items.flatMap(i => Array(i.quantity).fill(i.price)).sort((a: number, b: number) => b - a);
+  const allPrices = items
+    .flatMap(i => Array(i.quantity).fill(i.price))
+    .sort((a: number, b: number) => b - a);
 
   const bundleTotal = bundles * 1550;
-  const remainingTotal = allPrices.slice(bundles * 3).reduce((s: number, p: number) => s + p, 0);
+  const remainingTotal = allPrices
+    .slice(bundles * 3)
+    .reduce((s: number, p: number) => s + p, 0);
 
   return bundleTotal + remainingTotal;
 }
@@ -46,14 +49,11 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "babysilk-session-secret",
-      resave: false,
-      saveUninitialized: false,
-      cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
-    })
-  );
+  // ✅ Dummy session fallback (prevents crashes)
+  app.use((req: any, res, next) => {
+    req.session = req.session || {};
+    next();
+  });
 
   app.post("/api/orders", async (req, res) => {
     try {
@@ -80,11 +80,10 @@ export async function registerRoutes(
           state: validated.state,
           pincode: validated.pincode,
           totalAmount: serverTotal,
-          // 🔥 CHANGED: Now using the new master flow default
           paymentStatus: "pending_payment",
           orderStatus: "order_placed",
           upiTransactionId: null,
-          paymentScreenshot: null, // Initialized as null
+          paymentScreenshot: null,
           notes: null,
         },
         items.map((item: any) => ({
@@ -100,23 +99,24 @@ export async function registerRoutes(
       res.json(order);
     } catch (error: any) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: error.errors.map(e => e.message).join(", ") });
+        return res.status(400).json({
+          message: error.errors.map(e => e.message).join(", "),
+        });
       }
       console.error("Order creation error:", error);
       res.status(500).json({ message: "Failed to create order" });
     }
   });
 
-  // 🔥 UPDATED: User submitting UTR / Screenshot
   app.patch("/api/orders/:orderId/payment", async (req, res) => {
     try {
-      const { orderId } = req.params;
-      const { upiTransactionId, paymentScreenshot } = req.body; // Added screenshot
+      const orderId = req.params.orderId as string;
+      const { upiTransactionId, paymentScreenshot } = req.body;
 
       const updated = await storage.updateOrderPayment(orderId, {
         upiTransactionId,
-        paymentScreenshot, // Passing screenshot to DB
-        paymentStatus: "payment_submitted", // Forcing the new status
+        paymentScreenshot,
+        paymentStatus: "payment_submitted",
       });
 
       if (!updated) {
@@ -130,34 +130,44 @@ export async function registerRoutes(
     }
   });
 
-  // 🔥 NEW: Admin clicking "Mark as Paid"
-  app.patch("/api/admin/orders/:orderId/mark-paid", requireAdmin, async (req, res) => {
-    try {
-      const { orderId } = req.params;
-      
-      const updated = await storage.updateOrderPayment(orderId, {
-        paymentStatus: "paid"
-      });
+  app.patch(
+    "/api/admin/orders/:orderId/mark-paid",
+    requireAdmin,
+    async (req, res) => {
+      try {
+        const orderId = req.params.orderId as string;
 
-      if (!updated) {
-        return res.status(404).json({ message: "Order not found" });
+        const updated = await storage.updateOrderPayment(orderId, {
+          paymentStatus: "paid",
+        });
+
+        if (!updated) {
+          return res.status(404).json({ message: "Order not found" });
+        }
+
+        res.json({ success: true, updated });
+      } catch (error: any) {
+        console.error("Admin mark paid error:", error);
+        res.status(500).json({ message: "Failed to mark as paid" });
       }
-
-      res.json({ success: true, updated });
-    } catch (error: any) {
-      console.error("Admin mark paid error:", error);
-      res.status(500).json({ message: "Failed to mark as paid" });
     }
-  });
+  );
 
   app.get("/api/orders/track", async (req, res) => {
     try {
-      const { orderId, phone } = req.query as { orderId: string; phone: string };
+      const { orderId, phone } = req.query as {
+        orderId: string;
+        phone: string;
+      };
+
       if (!orderId || !phone) {
-        return res.status(400).json({ message: "Order ID and phone are required" });
+        return res
+          .status(400)
+          .json({ message: "Order ID and phone are required" });
       }
 
       const result = await storage.getOrderByIdAndPhone(orderId, phone);
+
       if (!result) {
         return res.status(404).json({ message: "Order not found" });
       }
@@ -172,7 +182,6 @@ export async function registerRoutes(
         city: result.order.city,
         state: result.order.state,
         items: result.items,
-        // Optional: you could send back upiTransactionId/paymentScreenshot here if needed in UI later
       });
     } catch (error: any) {
       console.error("Track order error:", error);
@@ -180,12 +189,14 @@ export async function registerRoutes(
     }
   });
 
+  // ✅ UPDATED LOGIN (TOKEN BASED)
   app.post("/api/admin/login", (req, res) => {
     const { password } = req.body;
-    const adminPassword = process.env.ADMIN_PASSWORD || "BSKAdmin2024";
+    const adminPassword =
+      process.env.ADMIN_PASSWORD || "BSKAdmin2024";
+
     if (password === adminPassword) {
-      req.session.isAdmin = true;
-      res.json({ success: true });
+      res.json({ success: true, token: adminPassword });
     } else {
       res.status(401).json({ message: "Invalid password" });
     }
@@ -213,10 +224,14 @@ export async function registerRoutes(
 
   app.patch("/api/admin/orders/:orderId", requireAdmin, async (req, res) => {
     try {
-      const { orderId } = req.params;
+      const orderId = req.params.orderId as string;
       const { orderStatus, notes } = req.body;
 
-      const updated = await storage.updateOrderStatus(orderId, { orderStatus, notes });
+      const updated = await storage.updateOrderStatus(orderId, {
+        orderStatus,
+        notes,
+      });
+
       if (!updated) {
         return res.status(404).json({ message: "Order not found" });
       }

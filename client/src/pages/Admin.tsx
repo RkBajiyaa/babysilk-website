@@ -75,15 +75,32 @@ export default function Admin() {
     },
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await apiRequest("POST", "/api/admin/login", { password });
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      // ✅ store token
+      localStorage.setItem("bsk_admin_token", data.token);
+
       setAuthenticated(true);
-    } catch {
-      toast({ title: "Incorrect password", variant: "destructive" });
+    } else {
+      throw new Error("Wrong password");
     }
-  };
+  } catch {
+    toast({ title: "Incorrect password", variant: "destructive" });
+  }
+};
 
   if (!authenticated) {
     return (
